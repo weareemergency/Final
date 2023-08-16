@@ -37,7 +37,7 @@ class footer_menu:
         hfile_img = Image.open("img/hfile.png")
         searcheck_img = Image.open("img/searcheck.png")
         aram_img = Image.open("img/aram.png")
-        setting_img = Image.open("img/setting.png")
+        setting_img = Image.open("img/setting_menu.png")
         # 이미지를 가져온다 
         
         footer_ra_img = footer_ra_img.resize((900, 170))
