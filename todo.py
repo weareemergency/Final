@@ -3,8 +3,8 @@ from pprint import pprint
 from PIL import ImageTk, Image
 from pathlib import Path
 from tkinter.scrolledtext import ScrolledText
-import header
-import footer
+# import header
+# import footer
 
 class todo_list:
     def __init__(self, canvas, root):
