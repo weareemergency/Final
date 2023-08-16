@@ -23,9 +23,7 @@
 """
 
 from tkinter import *
-import header
 import main
-import footer
 import start_main
 
 mode = 1
@@ -39,7 +37,6 @@ if __name__=="__main__":
     
     root.geometry("1080x1920")
     # 화면 크기를 지정한다
-    header.Header_menu(canvas, root)
     start_main.Menu_start(canvas, root, mode)
     
     # root.wm_attributes('-fullscreen', 'True') # gui 완성시 주석 삭제
