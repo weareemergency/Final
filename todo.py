@@ -3,7 +3,7 @@ from pprint import pprint
 from PIL import ImageTk, Image
 from pathlib import Path
 from tkinter.scrolledtext import ScrolledText
-# import header
+import ranking
 # import footer
 
 class todo_list:
@@ -11,7 +11,16 @@ class todo_list:
         self.canvas = canvas
         self.root = root
         self.todo()
-         
+    def ranking_go(self):
+        self.black_img = Image.open("img/1B1B1B.png")
+        self.black_img = self.black_img.resize((1050, 1200))
+        self.root.black_img = ImageTk.PhotoImage(self.black_img)
+
+        self.star_button = Label(self.root,image=self.root.black_img,width=1050,height=1200, bg="white",borderwidth=0, highlightthickness=0)
+
+        self.canvas.create_window(540, 1000, window=self.star_button)
+        ranking.rank_list(self.canvas, self.root)
+        
     def todo(self):
         self.todo_ract = Image.open("img/Rect16.png")
         self.todo_ract = self.todo_ract.resize((915, 538))
@@ -37,7 +46,7 @@ class todo_list:
         
         self.img_list = ScrolledText(self.root, width=10, height=26,borderwidth=0,highlightthickness=0)
         
-        self.ranking_Button = Button(self.root, text="랭킹 보러가기>",font=('NaumGothic',25),bg="#1b1b1b",fg="white",borderwidth=0, highlightthickness=0, justify="left")
+        self.ranking_Button = Button(self.root, text="랭킹 보러가기>",font=('NaumGothic',25),bg="#1b1b1b",fg="white",borderwidth=0, highlightthickness=0, justify="left", command=self.ranking_go)
         
         #투두 리스트를 했을경우 check 이미지를 나오게 한다
         self.img_list.image_create(INSERT, image=self.root.check_not)

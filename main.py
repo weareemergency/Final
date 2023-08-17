@@ -1,23 +1,3 @@
-"""
-    개발 log{
-        2023.06.26 이지석
-        - main.py 모듈 제작
-    }
-    사용 label{  
-        grap_result_label   # "자세 분석 결과:" 문자를 출력
-        grap_vare_label     # "전주 대비 향상 되었습니다!" 등 결과를 문자로 출력
-        crow_img_label      # 랭크 화면의 이미지를 출력
-        list_label          # 1위 랭크를 출력
-        list_rank_lable     # 2등 랭크를 출력
-        list_rank2_lable    # 3등 랭크를 출력
-    }
-    button{
-        button              # 영상들을 추천하는 그림을 출력
-        ract_img_button     # 자세분석 결과 박스 출력
-        ract2_img_button    # 투두 리스트 박스 출력
-    }
-"""
-
 from tkinter import *
 import numpy as np
 from PIL import ImageTk, Image
@@ -27,6 +7,7 @@ from pprint import pprint
 from matplotlib.backends.backend_tkagg import (FigureCanvasTkAgg, 
 NavigationToolbar2Tk)
 from scipy.interpolate import make_interp_spline
+
 
 class main_menu:
     def __init__(self, canvas, root):

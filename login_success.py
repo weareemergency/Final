@@ -1,13 +1,3 @@
-"""
-    개발 log{
-        2023.07.25 이지석
-        - login_success.py 모듈 제작
-        .......
-    }
-    사용 label{
-        login_su_incon_label //로그인 icon 출력
-    }
-"""
 from tkinter import *
 from pprint import pprint
 from PIL import ImageTk, Image
