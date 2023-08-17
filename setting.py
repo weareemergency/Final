@@ -1,16 +1,3 @@
-"""
-    개발 log{
-        2023.08.15 이지석
-        - setting.py 모듈 제작
-        .......
-    }
-    사용 label{
-        
-    }
-    사용 listbox{
-        
-    }
-"""
 from tkinter import *
 from tkinter import ttk
 from pprint import pprint
@@ -18,7 +5,7 @@ from PIL import ImageTk, Image
 from pathlib import Path
 from tkinter.scrolledtext import ScrolledText
 
-class rank_list:
+class setting_menu:
     def __init__(self, canvas, root):
         self.canvas = canvas
         self.root = root
@@ -70,7 +57,7 @@ if __name__=="__main__":
     # gui화면 설정 배경 bg="색갈입력" 현재 #1b1b1b 설정됨
     canvas.pack(fill=BOTH, expand=TRUE)
     # footer.footer_menu(canvas, root)
-    rank_list(canvas, root)
+    setting_menu(canvas, root)
     root.geometry("1080x1920")
     # 화면 크기를 지정한다
     root.mainloop()

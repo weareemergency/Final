@@ -1,12 +1,11 @@
-import threading, requests, todo, main
-
+import threading, requests, todo, main, Health, setting
 from tkinter import *
 from datetime import datetime
 from bs4 import BeautifulSoup as bs
 from pprint import pprint
 from PIL import ImageTk, Image
 
-class Header:
+class Header_footer:
     # write_header 함수를 실행하여 label, button을 출력한다
     def __init__(self, canvas, root, call_main):
         self.canvas = canvas
@@ -112,16 +111,61 @@ class Header:
     # ----------- footer line
 
     def todo_click(self):
-        self.call_main.clean_show()
-        self.tell_todo = todo.todo_list(self.canvas, self.root)
+        self.black_img = Image.open("img/1B1B1B.png")
+        self.black_img = self.black_img.resize((1050, 1200))
+        self.root.black_img = ImageTk.PhotoImage(self.black_img)
 
+        self.star_button = Label(self.root,image=self.root.black_img,width=1050,height=1200, bg="white",borderwidth=0, highlightthickness=0)
+
+        self.canvas.create_window(540, 1000, window=self.star_button)
+        todo.todo_list(self.canvas, self.root)
+    
+    def hfile_click(self):
+        self.black_img = Image.open("img/1B1B1B.png")
+        self.black_img = self.black_img.resize((1050, 1200))
+        self.root.black_img = ImageTk.PhotoImage(self.black_img)
+
+        self.star_button = Label(self.root,image=self.root.black_img,width=1050,height=1200, bg="white",borderwidth=0, highlightthickness=0)
+
+        self.canvas.create_window(540, 1000, window=self.star_button)
+        Health.HealthReport(self.canvas, self.root)
+    def check(self):
+        self.black_img = Image.open("img/1B1B1B.png")
+        self.black_img = self.black_img.resize((1050, 1200))
+        self.root.black_img = ImageTk.PhotoImage(self.black_img)
+
+        self.star_button = Label(self.root,image=self.root.black_img,width=1050,height=1200, bg="white",borderwidth=0, highlightthickness=0)
+
+        self.canvas.create_window(540, 1000, window=self.star_button)
+        Health.HealthList(self.canvas, self.root)
+    """
+    def aram(self):
+        self.black_img = Image.open("img/1B1B1B.png")
+        self.black_img = self.black_img.resize((1050, 1200))
+        self.root.black_img = ImageTk.PhotoImage(self.black_img)
+
+        self.star_button = Label(self.root,image=self.root.black_img,width=1050,height=1200, bg="white",borderwidth=0, highlightthickness=0)
+
+        self.canvas.create_window(540, 1000, window=self.star_button)
+        Health.HealthList(self.canvas, self.root)
+    """
+    def setting(self):
+        self.black_img = Image.open("img/1B1B1B.png")
+        self.black_img = self.black_img.resize((1050, 1200))
+        self.root.black_img = ImageTk.PhotoImage(self.black_img)
+
+        self.star_button = Label(self.root,image=self.root.black_img,width=1050,height=1200, bg="white",borderwidth=0, highlightthickness=0)
+
+        self.canvas.create_window(540, 1000, window=self.star_button)
+        setting.setting_menu(self.canvas, self.root)
+        
     def write_footer(self):
         footer_ra_img = Image.open("img/footer_ract.png")
         todo_img = Image.open("img/todo.png")
         hfile_img = Image.open("img/hfile.png")
         searcheck_img = Image.open("img/searcheck.png")
         aram_img = Image.open("img/aram.png")
-        setting_img = Image.open("img/setting.png")
+        setting_img = Image.open("img/setting_menu.png")
         # 이미지를 가져온다
 
         footer_ra_img = footer_ra_img.resize((900, 170))
@@ -145,13 +189,13 @@ class Header:
         self.todo_button = Button(self.root, image=self.root.todo_img, bg="#535355", width=100, height=140,
                                   borderwidth=0, highlightthickness=0, command=self.todo_click)
         self.hfile_button = Button(self.root, image=self.root.hfile_img, bg="#535355", width=100, height=140,
-                                   borderwidth=0, highlightthickness=0)
+                                   borderwidth=0, highlightthickness=0, command=self.hfile_click)
         self.searcheck_button = Button(self.root, image=self.root.searcheck_img, bg="#535355", width=100, height=140,
-                                       borderwidth=0, highlightthickness=0)
+                                       borderwidth=0, highlightthickness=0, command=self.check)
         self.aram_button = Button(self.root, image=self.root.aram_img, bg="#535355", width=100, height=140,
                                   borderwidth=0, highlightthickness=0)
         self.setting_button = Button(self.root, image=self.root.setting_img, bg="#535355", width=100, height=140,
-                                     borderwidth=0, highlightthickness=0)
+                                     borderwidth=0, highlightthickness=0, command=self.setting)
 
         self.canvas.create_window(540, 1750, window=self.footer_img_lable)
         self.canvas.create_window(270, 1750, window=self.todo_button)
@@ -179,7 +223,7 @@ if __name__ == "__main__":
     root.geometry("1080x1920")
     # 화면 크기를 지정한다
     test = main.main_menu(canvas, root)
-    Header(canvas, root, test)
+    #Header(canvas, root, test)
 
     # root.wm_attributes('-fullscreen', 'True') # gui 완성시 주석 삭제
     # 윈도우 상당 바를 없애고 풀스크린 설정 한다

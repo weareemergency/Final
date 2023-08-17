@@ -1,24 +1,9 @@
-"""
-    개발 log{
-        2023.08.9 이지석
-        - ranking.py 모듈 제작
-        .......
-    }
-    사용 label{
-        
-    }
-    사용 listbox{
-        
-    }
-"""
-
 from tkinter import *
 from tkinter import ttk
 from pprint import pprint
 from PIL import ImageTk, Image
 from pathlib import Path
 from tkinter.scrolledtext import ScrolledText
-
 
 class health_list:
     def __init__(self, canvas, root):
@@ -91,7 +76,7 @@ if __name__=="__main__":
     canvas = Canvas(root, bg="#1b1b1b") 
     # gui화면 설정 배경 bg="색갈입력" 현재 #1b1b1b 설정됨
     canvas.pack(fill=BOTH, expand=TRUE)
-    #header.Header_menu(canvas, root)
+    #gheader.Header_menu(canvas, root)
     # footer.footer_menu(canvas, root)
     health_list(canvas, root)
     root.geometry("1080x1920")
