@@ -8,6 +8,7 @@ from matplotlib.backends.backend_tkagg import (FigureCanvasTkAgg,
 NavigationToolbar2Tk)
 from scipy.interpolate import make_interp_spline
 
+
 class main_menu:
     def __init__(self, canvas, root):
         self.canvas = canvas

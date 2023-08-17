@@ -1,4 +1,4 @@
-import threading, requests, todo, main, Health, setting
+import threading, requests, todo, main, Health, setting, detect
 from tkinter import *
 from datetime import datetime
 from bs4 import BeautifulSoup as bs
@@ -138,7 +138,7 @@ class Header_footer:
 
         self.canvas.create_window(540, 1000, window=self.star_button)
         Health.HealthList(self.canvas, self.root)
-    """
+    
     def aram(self):
         self.black_img = Image.open("img/1B1B1B.png")
         self.black_img = self.black_img.resize((1050, 1200))
@@ -147,8 +147,8 @@ class Header_footer:
         self.star_button = Label(self.root,image=self.root.black_img,width=1050,height=1200, bg="white",borderwidth=0, highlightthickness=0)
 
         self.canvas.create_window(540, 1000, window=self.star_button)
-        Health.HealthList(self.canvas, self.root)
-    """
+            
+    
     def setting(self):
         self.black_img = Image.open("img/1B1B1B.png")
         self.black_img = self.black_img.resize((1050, 1200))

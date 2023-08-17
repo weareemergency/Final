@@ -120,7 +120,7 @@ if __name__ == "__main__":
     pose = mp_pose.Pose()
 
     try:
-        main_thread = threading.Thread(target=main())
+        main_thread = threading.Thread(target=main)
         main_thread.start()
     except IndexError:
         # main_thread = threading.Thread(target=main())
