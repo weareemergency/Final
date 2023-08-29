@@ -1,6 +1,5 @@
 from tkinter import *
 import main
-import start_main
 import HeaderFooter
 mode = 1
 
