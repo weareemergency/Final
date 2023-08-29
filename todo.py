@@ -29,20 +29,27 @@ class todo_list:
         self.root = root
         self.todo()
 
-    # def connect_db(self):
-    #     if self.connection:
-    #         print("MySQL Connect")
+    def connect_db(self):
+        data = None
 
-    #     self.query = "SELECT * FROM todolist"
-    #     self.cursor = self.connection.cursor()
-    #     self.cursor.execute(self.query)
+        if self.connection:
+            print("MySQL Connect")
+            data = todo_list.select_todo(self, 1)
         
-    #     # 결과 가져오기
-    #     self.result = self.cursor.fetchall()
+        else:
+            print("fail")
+
+        return data
+
+    def select_todo(self, id):
+        cursor = self.connection.cursor()
+        query = f"SELECT * FROM todolist where id = {id}"  
+        cursor.execute(query)
+
+        result = cursor.fetchall()
+
+        return result
         
-    #     # 결과 출력
-    #     for row in self.result:
-    #         print(row)
     
     def ranking_go(self):
         black_img = Image.open(self.black_img_path)
@@ -73,9 +80,12 @@ class todo_list:
             return Listbox(self.root, font=('NaumGothic',20),width=width, height=height, borderwidth=0,bg="white",highlightthickness=0)
         
     def todo(self):
-        root.todo_ract = todo_list.image_open(self.todo_image_path, self.resize915_538)
-        root.check = todo_list.image_open(self.check_image_path, self.resize49_49)
-        root.check_not = todo_list.image_open(self.check_not_image_path, self.resize49_49)
+        # db checking line 
+        todo_list.connect_db(self)
+
+        self.root.todo_ract = todo_list.image_open(self.todo_image_path, self.resize915_538)
+        self.root.check = todo_list.image_open(self.check_image_path, self.resize49_49)
+        self.root.check_not = todo_list.image_open(self.check_not_image_path, self.resize49_49)
 
         title = "title_label"
         nav = "nav_label"
@@ -87,7 +97,7 @@ class todo_list:
         self.due_lable = todo_list.label(self, "Due Date", nav, None, None)
         self.com_lable = todo_list.label(self, "Complete", nav, None, None)
 
-        self.todo_ract = Label(self.root, image=root.todo_ract, bg="#1b1b1b", borderwidth=0, highlightthickness=0)
+        self.todo_ract = Label(self.root, image=self.root.todo_ract, bg="#1b1b1b", borderwidth=0, highlightthickness=0)
         
         self.view_list = todo_list.label(self, None, detail, 25, 13)
         self.date_list = todo_list.label(self, None, detail, 10, 13)
@@ -97,72 +107,43 @@ class todo_list:
         
         self.ranking_Button = Button(self.root, text="랭킹 보러가기>",font=('NaumGothic',25),bg="#1b1b1b",fg="white",borderwidth=0, highlightthickness=0, justify="left", command=self.ranking_go)
         
-        #투두 리스트를 했을경우 check 이미지를 나오게 한다
-        self.img_list.image_create(INSERT, image=self.root.check_not)
-        self.img_list.insert(INSERT, '\n')
-        self.img_list.insert(INSERT, '\n')
-        self.img_list.image_create(INSERT, image=self.root.check_not)
-        self.img_list.insert(INSERT, '\n')
-        self.img_list.insert(INSERT, '\n')
-        self.img_list.image_create(INSERT, image=self.root.check_not)
-        self.img_list.insert(INSERT, '\n')
-        self.img_list.insert(INSERT, '\n')
-        self.img_list.image_create(INSERT, image=self.root.check)
-        self.img_list.insert(INSERT, '\n')
-        self.img_list.insert(INSERT, '\n')
-        self.img_list.image_create(INSERT, image=self.root.check)
-        self.img_list.insert(INSERT, '\n')
-        self.img_list.insert(INSERT, '\n')
-        self.img_list.image_create(INSERT, image=self.root.check)
-        self.img_list.insert(INSERT, '\n')
-        self.img_list.insert(INSERT, '\n')
+        # DB Code line ---- 
+        data = todo_list.connect_db(self)
+        # print(data) # (1, '김병찬', datetime.date(2023, 8, 30), 0) 형식으로 출력 
+        # print(len(data))
+
+        for i in range(len(data)):
+            self.img_list.image_create(INSERT, image=self.root.check_not)
+            self.img_list.insert(INSERT, '\n')
+            self.img_list.insert(INSERT, '\n')
+
+            # 날짜
+            self.date_list.insert(0, data[i][2])
+            self.date_list.insert(END, '')
         
-        #투두 리스트 날짜를 입력한다
-        self.date_list.insert(0, '2023.05.15')
-        self.date_list.insert(END, '')
-        self.date_list.insert(END, '2023.05.17')
-        self.date_list.insert(END, '')
-        self.date_list.insert(END, '2023.05.14')
-        self.date_list.insert(END, '')
-        self.date_list.insert(END, '2023.05.14')
-        self.date_list.insert(END, '')
-        self.date_list.insert(END, '2023.05.14')
-        self.date_list.insert(END, '')
-        self.date_list.insert(END, '2023.05.14')
-        self.date_list.insert(END, '')
+            # Todo
+            self.view_list.insert(0, data[i][1])
+            self.view_list.insert(END, '')
+
+            #listbox 클릭 활성화를 종료한다
+            self.view_list.bindtags((self.view_list, self.root, "all"))
+            self.date_list.bindtags((self.date_list, self.root, "all"))
         
-        #투두 리스트내용을 입력한다
-        self.view_list.insert(0, '신경외과 처방약 (디스크)복용')
-        self.view_list.insert(END, '')
-        self.view_list.insert(END, '프라임 병원 신경과 16:00 내원')
-        self.view_list.insert(END, '')
-        self.view_list.insert(END, '내과 내원')
-        self.view_list.insert(END, '')
-        self.view_list.insert(END, '이좋은 치과 내원 (임플란트 검진)')
-        self.view_list.insert(END, '')
-        self.view_list.insert(END, '도수 치료, 전기충격파 치료')
-        self.view_list.insert(END, '')
-        self.view_list.insert(END, '양유빈 경험 담')
-        
-        #listbox 클릭 활성화를 종료한다
-        self.view_list.bindtags((self.view_list, self.root, "all"))
-        self.date_list.bindtags((self.date_list, self.root, "all"))
-        
-        self.canvas.create_window(540,1140, window=self.ranking_Button)
-        self.canvas.create_window(915,884, window=self.img_list)
-        self.canvas.create_window(950, 875, window=self.check_box)
-        self.canvas.create_window(330, 890, window=self.view_list)
-        self.canvas.create_window(686, 890, window=self.date_list)
-        self.canvas.create_window(540, 840, window=self.todo_ract)
-        self.canvas.create_window(200, 524, window=self.todo_name_label)
-        self.canvas.create_window(180, 630, window=self.todo_lable)
-        self.canvas.create_window(670, 630, window=self.due_lable)
-        self.canvas.create_window(890, 630, window=self.com_lable)
-        
-        self.todo_lable.lift()
-        self.due_lable.lift()
-        self.com_lable.lift()
-        self.check_box.lift()
+            self.canvas.create_window(540,1140, window=self.ranking_Button)
+            self.canvas.create_window(915,884, window=self.img_list)
+            self.canvas.create_window(950, 875, window=self.check_box)
+            self.canvas.create_window(330, 890, window=self.view_list)
+            self.canvas.create_window(686, 890, window=self.date_list)
+            self.canvas.create_window(540, 840, window=self.todo_ract)
+            self.canvas.create_window(200, 524, window=self.todo_name_label)
+            self.canvas.create_window(180, 630, window=self.todo_lable)
+            self.canvas.create_window(670, 630, window=self.due_lable)
+            self.canvas.create_window(890, 630, window=self.com_lable)
+            
+            self.todo_lable.lift()
+            self.due_lable.lift()
+            self.com_lable.lift()
+            self.check_box.lift()
 
 if __name__=="__main__":
     root = Tk()#Tk 생성
