@@ -61,8 +61,8 @@ class RankList:
                     name = data[i]
                     text = f"{rank}위, {name}님"
                     self.rank_label1 = Label(self.root, font=('NanumGothic', 23,'bold'),anchor='w',height=5, width=16,text=text,fg="black", bg="white")
-                    self.rank_label2 = Label(self.root, font=('NanumGothic', 23,'bold'), anchor='w',height=5, width=16,text='2위 이지석님',fg="black", bg="white")
-                    self.rank_label3 = Label(self.root, font=('NanumGothic', 23,'bold'), anchor='w',height=5, width=16,text='3위 김병찬님',fg="black", bg="white")
+                
+                elif i == 5:
                     self.list_rank =  Listbox(self.root, font=('NaumGothic',20,'bold'),width=15, height=15, borderwidth=0,bg="white",highlightthickness=0, justify="center")
                 
                 else:
