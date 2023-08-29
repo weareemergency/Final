@@ -1,9 +1,11 @@
-import threading, requests, todo, main, Health, setting, detect
+import threading, requests, main, Health, setting, detect
 from tkinter import *
 from datetime import datetime
 from bs4 import BeautifulSoup as bs
 from pprint import pprint
 from PIL import ImageTk, Image
+
+from PAGE_01.todo import TodoList
 
 class Header_footer:
     # write_header 함수를 실행하여 label, button을 출력한다
@@ -118,7 +120,7 @@ class Header_footer:
         self.star_button = Label(self.root,image=self.root.black_img,width=1050,height=1200, bg="white",borderwidth=0, highlightthickness=0)
 
         self.canvas.create_window(540, 1000, window=self.star_button)
-        todo.todo_list(self.canvas, self.root)
+        TodoList(self.canvas, self.root)
     
     def hfile_click(self):
         self.black_img = Image.open("img/1B1B1B.png")

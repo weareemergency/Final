@@ -31,6 +31,19 @@ class TodoDataBase():
         else:
             print("error")
 
+    def select_rank(self):
+        if TodoDataBase.connect_db(self):
+            cursor = self.connection.cursor()
+            query = f"select Username from ranking;"  
+            cursor.execute(query)
+
+            result = cursor.fetchall()
+            
+            return result
+        
+        else:
+            print("error")
+
 
 if __name__ == "__main__":
     A = TodoDataBase()
