@@ -34,7 +34,7 @@ class todo_list:
         self.check_not = self.check_not.resize((49, 49))
         self.root.check_not = ImageTk.PhotoImage(self.check_not)
         
-        self.todo_name_label= Label(self.root, text="양유빈님의 투두리스트>",font=('NaumGothic',25),bg="#1b1b1b",fg="white",borderwidth=0, highlightthickness=0, justify="left")
+        self.todo_name_label= Label(self.root, text="투두리스트>",font=('NaumGothic',25),bg="#1b1b1b",fg="white",borderwidth=0, highlightthickness=0, justify="left")
         self.todo_lable = Label(self.root, font=('Noto Sans', 16, 'bold'), text='To Do List',fg="black", bg="white")
         self.due_lable = Label(self.root, font=('Noto Sans', 16, 'bold'), text='Due Date',fg="black", bg="white")
         self.com_lable = Label(self.root, font=('Noto Sans', 16, 'bold'), text='Complete',fg="black", bg="white")
@@ -105,7 +105,7 @@ class todo_list:
         self.canvas.create_window(330, 890, window=self.view_list)
         self.canvas.create_window(686, 890, window=self.date_list)
         self.canvas.create_window(540, 840, window=self.todo_ract)
-        self.canvas.create_window(254, 524, window=self.todo_name_label)
+        self.canvas.create_window(200, 524, window=self.todo_name_label)
         self.canvas.create_window(180, 630, window=self.todo_lable)
         self.canvas.create_window(670, 630, window=self.due_lable)
         self.canvas.create_window(890, 630, window=self.com_lable)

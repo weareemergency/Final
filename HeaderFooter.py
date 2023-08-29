@@ -147,7 +147,7 @@ class Header_footer:
         self.star_button = Label(self.root,image=self.root.black_img,width=1050,height=1200, bg="white",borderwidth=0, highlightthickness=0)
 
         self.canvas.create_window(540, 1000, window=self.star_button)
-            
+        exec(open("item2.py").read())
     
     def setting(self):
         self.black_img = Image.open("img/1B1B1B.png")

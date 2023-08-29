@@ -13,6 +13,7 @@ if __name__=="__main__":
     
     root.geometry("1080x1920")
     # 화면 크기를 지정한다
+    
     mode = 1
     HeaderFooter.Header_footer(canvas,root, mode)
     main_id=main.main_menu(canvas, root)
