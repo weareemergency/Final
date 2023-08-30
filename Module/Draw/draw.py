@@ -1,5 +1,4 @@
-import cv2
-import math
+import cv2, pymysql
 
 class Draw:
     def __init__(self, frame, width, hegiht):
@@ -43,9 +42,19 @@ class Angle:
             result = pt2 / pt1
 
             print(result)
-            try: # 여기서부터 수정 
-                from database import Graph
-                Graph.inesrt_angle(result)
+            
+            host = '127.0.0.1'
+            user = 'root'
+            password = '1234'
+            database = 'test'
+            connection = pymysql.connect(host=host, user=user, password=password, database=database)
+            try:
+                if connection:
+                    cursor = connection.cursor()
+                    query = f"INSERT INTO angle VALUES (2, '김병찬', {result}, CURDATE())"  
+                    cursor.execute(query)
+                else: 
+                    print("DB Connected error")
 
             except:
                 print("DB connected error")
