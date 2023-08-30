@@ -16,7 +16,9 @@ def create_folder(folder_path):
     else:
         print(f"폴더 존재 : {folder_path}")
 
-def cap():
+stop_flag = False
+
+def main():
     cap = cv2.VideoCapture(0)
     
     width, height = get_shape(int(cap.get(cv2.CAP_PROP_FRAME_WIDTH)), int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT)))
@@ -86,6 +88,12 @@ def cap():
 
                     if cv2.waitKey(1) == 27 or count == 60:
                         detect()
+                        global stop_flag
+                        stop_flag = True
+
+                    if stop_flag:
+                        break
+
                 else:
                     center.center_rect(first_rect, 1)
                     center.center_rect(second_rect, 0)
@@ -95,12 +103,10 @@ def cap():
 
         cv2.imshow('Main', frame)
 
-        if cv2.waitKey(1) == 27:
+        if cv2.waitKey(1) == 27 or stop_flag == True:
             break
 
     cap.release()
     cv2.destroyAllWindows()
-    
-def main():
-    main_thread = threading.Thread(target=cap)
-    main_thread.start()
+
+main()

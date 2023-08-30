@@ -1,6 +1,5 @@
 import torch
 import cv2
-import numpy as np
 
 from Module.Draw.draw import Angle
 
@@ -43,7 +42,3 @@ def detect():
 
     cv2.imwrite('Result/Result.jpeg', image)
     cv2.destroyAllWindows()
-
-    print(xy_list)
-
-#detect()
