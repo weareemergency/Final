@@ -92,32 +92,32 @@ class TodoList:
                 self.img_list.insert(INSERT, '\n')
 
                 # 날짜
-                self.date_list.insert(0, data[i][2])
+                self.date_list.insert(END, data[i][2])
                 self.date_list.insert(END, '')
             
                 # Todo
-                self.view_list.insert(0, data[i][1])
+                self.view_list.insert(END, data[i][1])
                 self.view_list.insert(END, '')
 
-                #listbox 클릭 활성화를 종료한다
-                self.view_list.bindtags((self.view_list, self.root, "all"))
-                self.date_list.bindtags((self.date_list, self.root, "all"))
+            #listbox 클릭 활성화를 종료한다
+            self.view_list.bindtags((self.view_list, self.root, "all"))
+            self.date_list.bindtags((self.date_list, self.root, "all"))
             
-                self.canvas.create_window(540,1140, window=self.ranking_Button)
-                self.canvas.create_window(915,884, window=self.img_list)
-                self.canvas.create_window(950, 875, window=self.check_box)
-                self.canvas.create_window(330, 890, window=self.view_list)
-                self.canvas.create_window(686, 890, window=self.date_list)
-                self.canvas.create_window(540, 840, window=self.todo_ract)
-                self.canvas.create_window(200, 524, window=self.todo_name_label)
-                self.canvas.create_window(180, 630, window=self.todo_lable)
-                self.canvas.create_window(670, 630, window=self.due_lable)
-                self.canvas.create_window(890, 630, window=self.com_lable)
+            self.canvas.create_window(540,1140, window=self.ranking_Button)
+            self.canvas.create_window(915,884, window=self.img_list)
+            self.canvas.create_window(950, 875, window=self.check_box)
+            self.canvas.create_window(330, 890, window=self.view_list)
+            self.canvas.create_window(686, 890, window=self.date_list)
+            self.canvas.create_window(540, 840, window=self.todo_ract)
+            self.canvas.create_window(200, 524, window=self.todo_name_label)
+            self.canvas.create_window(180, 630, window=self.todo_lable)
+            self.canvas.create_window(670, 630, window=self.due_lable)
+            self.canvas.create_window(890, 630, window=self.com_lable)
                 
-                self.todo_lable.lift()
-                self.due_lable.lift()
-                self.com_lable.lift()
-                self.check_box.lift()
+            self.todo_lable.lift()
+            self.due_lable.lift()
+            self.com_lable.lift()
+            self.check_box.lift()
 
         else: 
             print("Mysql 연결에 실패했습니다.")

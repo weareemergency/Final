@@ -7,6 +7,8 @@ class TodoDataBase():
         self.password = '1234'
         self.database = 'test'
         self.connection = pymysql.connect(host=self.host, user=self.user, password=self.password, database=self.database)
+        
+        print("hello")
 
     def connect_db(self):
         if self.connection:
@@ -43,7 +45,7 @@ class TodoDataBase():
         
         else:
             print("error")
-
+        
 
 if __name__ == "__main__":
     A = TodoDataBase()

@@ -1,5 +1,5 @@
 import cv2
-# import mediapipe as mp
+import mediapipe as mp
 import threading
 import os
 
@@ -42,6 +42,7 @@ def main():
         origin_frame = frame.copy()
 
         frame_rgb = frame_setting(frame)
+        frame_rgb = cv2.flip(frame_rgb, 1)
         results = pose.process(frame_rgb)
 
         if results.pose_landmarks:
@@ -76,7 +77,7 @@ def main():
 
             if ifin_1 and ifin_2 and ifin_3:
                 if (abs(ear_diff_x) - abs(ear_diff_y)) < 40: # 40 부분은 때에 따라서 무조건 수정
-                    frame[y:y + overlay_height, x:x + overlay_width] = step3
+                    # frame[y:y + overlay_height, x:x + overlay_width] = step3
                     center.center_rect(first_rect, 1)
                     center.center_rect(second_rect, 1)
                     count += 1
@@ -88,11 +89,11 @@ def main():
 
                         break
                 else:
-                    frame[y:y + overlay_height, x:x + overlay_width] = step2
+                    # frame[y:y + overlay_height, x:x + overlay_width] = step2
                     center.center_rect(first_rect, 1)
                     center.center_rect(second_rect, 0)
             else:
-                frame[y:y + overlay_height, x:x + overlay_width] = step1
+                # frame[y:y + overlay_height, x:x + overlay_width] = step1
                 center.center_rect(first_rect, 0)
                 center.center_rect(second_rect, 0)
 

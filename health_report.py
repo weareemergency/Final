@@ -5,6 +5,8 @@ from PIL import ImageTk, Image
 from pathlib import Path
 from tkinter.scrolledtext import ScrolledText
 
+from database import HealthReportDatabae
+
 class health_list:
     def __init__(self, canvas, root):
         self.canvas = canvas
@@ -27,6 +29,9 @@ class health_list:
         self.note = Image.open("img/notebook.png")
         self.note = self.note.resize((50,50))
         self.root.note = ImageTk.PhotoImage(self.note)
+        
+        db = HealthReportDatabae()
+        print(db)
         
         self.ract2_image = Label(self.root, image=self.root.ract2, bg="#1b1b1b", borderwidth=0, highlightthickness=0)
         self.ract3_image = Label(self.root, image=self.root.ract3, bg="#1b1b1b", borderwidth=0, highlightthickness=0)

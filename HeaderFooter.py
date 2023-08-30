@@ -5,7 +5,7 @@ from bs4 import BeautifulSoup as bs
 from pprint import pprint
 from PIL import ImageTk, Image
 
-from PAGE_01.todo import TodoList
+from todo import TodoList
 
 class Header_footer:
     # write_header 함수를 실행하여 label, button을 출력한다
@@ -150,7 +150,13 @@ class Header_footer:
 
         self.canvas.create_window(540, 1000, window=self.star_button)
         exec(open("item2.py").read())
-    
+        
+    def detect(self):
+        self.black_img = Image.open("img/1B1B1B.png")
+        self.black_img = self.black_img.resize((1050, 1200))
+        self.root.black_img = ImageTk.PhotoImage(self.black_img)
+
+        
     def setting(self):
         self.black_img = Image.open("img/1B1B1B.png")
         self.black_img = self.black_img.resize((1050, 1200))
@@ -195,7 +201,7 @@ class Header_footer:
         self.searcheck_button = Button(self.root, image=self.root.searcheck_img, bg="#535355", width=100, height=140,
                                        borderwidth=0, highlightthickness=0, command=self.check)
         self.aram_button = Button(self.root, image=self.root.aram_img, bg="#535355", width=100, height=140,
-                                  borderwidth=0, highlightthickness=0)
+                                  borderwidth=0, highlightthickness=0,command=self.detect)
         self.setting_button = Button(self.root, image=self.root.setting_img, bg="#535355", width=100, height=140,
                                      borderwidth=0, highlightthickness=0, command=self.setting)
 
