@@ -155,7 +155,11 @@ class Header_footer:
         self.black_img = Image.open("img/1B1B1B.png")
         self.black_img = self.black_img.resize((1050, 1200))
         self.root.black_img = ImageTk.PhotoImage(self.black_img)
-
+        
+        from detect import main
+        
+        main()
+     
         
     def setting(self):
         self.black_img = Image.open("img/1B1B1B.png")

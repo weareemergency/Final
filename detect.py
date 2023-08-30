@@ -16,10 +16,16 @@ def create_folder(folder_path):
     else:
         print(f"폴더 존재 : {folder_path}")
 
-def main():
+def cap():
     cap = cv2.VideoCapture(0)
-    folder_path = 'Result/'
-    create_folder(folder_path) # 폴더 만듬
+    
+    width, height = get_shape(int(cap.get(cv2.CAP_PROP_FRAME_WIDTH)), int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT)))
+    
+    vers = Vertex(width, height)
+    x1, x2, y1, y2 = vers.rect_vertex()
+    # print(x1, x2, y1, y2) 560 1360 140 940
+    
+    create_folder('Result/') # 폴더 만듬
 
     mp_pose = mp.solutions.pose
     pose = mp_pose.Pose()
@@ -33,12 +39,6 @@ def main():
         if not ret:
             break
 
-        guide = UserGuide(frame)
-        x, y, overlay_width, overlay_height = guide.position()
-
-        step1 = guide.step1() # 사진
-        step2 = guide.step2() # 사진
-        step3 = guide.step3() # 사진
         origin_frame = frame.copy()
 
         frame_rgb = frame_setting(frame)
@@ -86,14 +86,10 @@ def main():
 
                     if cv2.waitKey(1) == 27 or count == 60:
                         detect()
-
-                        break
                 else:
-                    # frame[y:y + overlay_height, x:x + overlay_width] = step2
                     center.center_rect(first_rect, 1)
                     center.center_rect(second_rect, 0)
             else:
-                # frame[y:y + overlay_height, x:x + overlay_width] = step1
                 center.center_rect(first_rect, 0)
                 center.center_rect(second_rect, 0)
 
@@ -104,26 +100,7 @@ def main():
 
     cap.release()
     cv2.destroyAllWindows()
-
-
-if __name__ == "__main__":
-    cap = cv2.VideoCapture(0)
-
-    # cap shape
-    width, height = get_shape(int(cap.get(cv2.CAP_PROP_FRAME_WIDTH)), int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT)))
-    # print(width, height)  # 1920 1080
-
-    vers = Vertex(width, height)
-    x1, x2, y1, y2 = vers.rect_vertex()
-    # print(x1, x2, y1, y2) 560 1360 140 940
-
-    mp_pose = mp.solutions.pose
-    pose = mp_pose.Pose()
-
-    try:
-        main_thread = threading.Thread(target=main)
-        main_thread.start()
-    except IndexError:
-        # main_thread = threading.Thread(target=main())
-        # main_thread.start()
-        print('error')
+    
+def main():
+    main_thread = threading.Thread(target=cap)
+    main_thread.start()
