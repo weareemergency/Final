@@ -22,9 +22,12 @@ class GetAngle:
 
     def main(self):
         cap = cv2.VideoCapture(0)
-        
+        cap.set(cv2.CAP_PROP_FRAME_WIDTH, 1080) # 640 -> 1280 
+        cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 1080)
+
         width, height = get_shape(int(cap.get(cv2.CAP_PROP_FRAME_WIDTH)), int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT)))
-        
+        print(f"width : {width}    height : {height}")
+
         vers = Vertex(width, height)
         x1, x2, y1, y2 = vers.rect_vertex()
         # print(x1, x2, y1, y2) 560 1360 140 940
@@ -85,10 +88,10 @@ class GetAngle:
                         center.center_rect(first_rect, 1)
                         center.center_rect(second_rect, 1)
                         count += 1
-                        if count == 40:
+                        if count == 60:
                             cv2.imwrite('Result/UserPicture.jpeg', origin_frame)
 
-                        if cv2.waitKey(1) == 27 or count == 60:
+                        if cv2.waitKey(1) == 27 or count == 62:
                             detect()
                             self.stop_flag = True
 

@@ -1,4 +1,4 @@
-import pymysql
+import pymysql, datetime
 
 class TodoDataBase():
     def __init__(self):
@@ -46,6 +46,33 @@ class TodoDataBase():
         else:
             print("error")
         
+
+class Graph(TodoDataBase):
+    def __init__(self):
+        super().__init__()
+
+    def connect_db(self):
+        if self.connection:
+            # print("MySQL Connect")
+            return True
+            
+        else:
+            print("fail")
+            return False
+
+    def inesrt_angle(self, angle_value):
+        if self.connect_db:
+            cursor = self.connection.cursor()
+            query = f"insert into ranking values('1', '양유빈', `{angle_value}`, '{datetime.datetime.now()}')"  
+            cursor.execute(query)
+
+            result = cursor.fetchall()
+            
+            return result
+        
+        else:
+            print("error")
+
 
 if __name__ == "__main__":
     A = TodoDataBase()

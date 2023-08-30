@@ -32,17 +32,23 @@ class Angle:
         try:
             pt1_x, pt1_y = xy_list[1][0], xy_list[1][1]  # pt1 가로 979, 320
             pt2_x, pt2_y = xy_list[0][0], xy_list[0][1]  # pt2 세로
-            cv2.putText(self.image, f"{(pt1_x, pt1_y)}", (pt1_x, pt1_y), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (0, 255, 0), 2)
-            cv2.putText(self.image, f"{(pt2_x, pt2_y)}", (pt2_x, pt2_y), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (0, 255, 0), 2)
-
-            pt1 = int(abs(pt1_x - pt2_x) / 1.777777) # 가로
-            pt2 = int(abs(pt1_y - pt2_y)) # 세로
-            
-            print(pt1 / pt2)
 
             cv2.line(self.image, (pt1_x, pt1_y), (pt1_x, pt2_y), (0, 0, 255), 2)
             cv2.line(self.image, (pt2_x, pt2_y), (pt1_x, pt2_y), (0,0,255), 2)
-            print(self.image.shape)
+            cv2.putText(self.image, f"{(pt1_x, pt1_y)}", (pt1_x, pt1_y), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (0, 255, 0), 2)
+            cv2.putText(self.image, f"{(pt2_x, pt2_y)}", (pt2_x, pt2_y), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (0, 255, 0), 2)
+
+            pt1 = int(abs(pt1_x - pt2_x) * 1.7777778) # 가로
+            pt2 = int(abs(pt1_y - pt2_y)) # 세로
+            result = pt2 / pt1
+
+            print(result)
+            try: # 여기서부터 수정 
+                from database import Graph
+                Graph.inesrt_angle(result)
+
+            except:
+                print("DB connected error")
 
         except IndexError:
             print("귀 혹은 목이 인식되지 않았습니다.")
