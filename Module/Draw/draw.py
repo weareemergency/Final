@@ -47,9 +47,9 @@ class Angle:
         except IndexError:
             print("귀 혹은 목이 인식되지 않았습니다.")
 
-            from detect import main
+            from detect import GetAngle
 
-            main()
+            GetAngle().main()
             
 
     def position_rect(self, x_min, y_min, x_max, y_max, number7_x, number7_y, label_text):
