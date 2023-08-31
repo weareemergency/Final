@@ -9,9 +9,11 @@ from Module.Draw.draw import Draw
 from Module.Draw.XY import Vertex, Body
 from Module.detect.imagedetect import detect
 
-class GetAngle:
+result_value = []
+
+class AI:
     def __init__(self):
-        self.stop_flag = False
+        self.result = None
 
     def create_folder(self, folder_path):
         if not os.path.exists(folder_path):
@@ -20,25 +22,35 @@ class GetAngle:
         else:
             print(f"폴더 존재 : {folder_path}")
 
+    def neck_angle_value(self):
+        global result_value
+        result = self.main()
+
+        try:
+            if result is not None:  # 반환값이 None이 아닐 때만 더함
+                result_value.extend(result) 
+            else:
+                pass
+        except TypeError:
+            pass
+
+        print(f"neck_angle_value : {self.result}")
+
     def main(self):
         cap = cv2.VideoCapture(0)
-        cap.set(cv2.CAP_PROP_FRAME_WIDTH, 1080) # 640 -> 1280 
-        cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 1080)
 
         width, height = get_shape(int(cap.get(cv2.CAP_PROP_FRAME_WIDTH)), int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT)))
-        print(f"width : {width}    height : {height}")
-
         vers = Vertex(width, height)
+        print("width, height", width, height)
         x1, x2, y1, y2 = vers.rect_vertex()
-        # print(x1, x2, y1, y2) 560 1360 140 940
-        
-        self.create_folder('Result/') # 폴더 만듬
 
         mp_pose = mp.solutions.pose
         pose = mp_pose.Pose()
 
-        first_rect = 400 # 바깥 네모 ( 수정 해야함 )
-        second_rect = 350 # 안쪽 네모 ( 수정 해야함 )
+        self.create_folder('Result/')
+
+        first_rect = 400
+        second_rect = 350
         count = 0
 
         while True:
@@ -49,7 +61,6 @@ class GetAngle:
             origin_frame = frame.copy()
 
             frame_rgb = frame_setting(frame)
-            frame_rgb = cv2.flip(frame_rgb, 1)
             results = pose.process(frame_rgb)
 
             if results.pose_landmarks:
@@ -84,20 +95,15 @@ class GetAngle:
 
                 if ifin_1 and ifin_2 and ifin_3:
                     if (abs(ear_diff_x) - abs(ear_diff_y)) < 40: # 40 부분은 때에 따라서 무조건 수정
-                        # frame[y:y + overlay_height, x:x + overlay_width] = step3
                         center.center_rect(first_rect, 1)
                         center.center_rect(second_rect, 1)
                         count += 1
-                        if count == 60:
+                        if count == 40:
                             cv2.imwrite('Result/UserPicture.jpeg', origin_frame)
 
-                        if cv2.waitKey(1) == 27 or count == 62:
-                            detect()
-                            self.stop_flag = True
-
-                        if self.stop_flag:
+                        if cv2.waitKey(1) == 27 or count == 60:
+                            self.result = detect()
                             break
-
                     else:
                         center.center_rect(first_rect, 1)
                         center.center_rect(second_rect, 0)
@@ -107,12 +113,36 @@ class GetAngle:
 
             cv2.imshow('Main', frame)
 
-            if cv2.waitKey(1) == 27 or self.stop_flag == True:
+            if cv2.waitKey(1) == 27:
                 break
-
+        
         cap.release()
         cv2.destroyAllWindows()
 
+def db(result_value):
+    import pymysql
+
+    host = '127.0.0.1'
+    user = 'root'
+    password = '1234'
+    database = 'test'
+    connection = pymysql.connect(host=host, user=user, password=password, database=database)
+
+    cursor = connection.cursor()
+    query = f"INSERT INTO angle (id, username, result_value) VALUES (6, '김아무개', {str(result_value)})"
+    cursor.execute(query)
+
+    connection.commit()  # 커밋을 해야 변경이 반영됨
+    cursor.close()
+    connection.close()
+
+    print("DB 전송 완료")
+
 
 if __name__ == "__main__":
-    GetAngle().main()
+    result_value = AI().neck_angle_value()
+
+    print("result_value", result_value)
+
+    
+
