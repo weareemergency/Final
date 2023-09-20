@@ -4,7 +4,7 @@ from datetime import datetime
 from bs4 import BeautifulSoup as bs
 from pprint import pprint
 from PIL import ImageTk, Image
-
+from detect import AI
 from todo import TodoList
 
 class Header_footer:
@@ -145,11 +145,14 @@ class Header_footer:
         self.black_img = Image.open("img/1B1B1B.png")
         self.black_img = self.black_img.resize((1050, 1200))
         self.root.black_img = ImageTk.PhotoImage(self.black_img)
+        
+        
         self.star_button = Label(self.root,image=self.root.black_img,width=1050,height=1200, bg="white",borderwidth=0, highlightthickness=0)
-
         self.canvas.create_window(540, 1000, window=self.star_button)
-        from detect import AI
-        AI().neck_angle_value()
+        self.cam_panel = Label(self.root,width=50,height=50, bg="white",borderwidth=0, anchor='center',highlightthickness=0)
+        self.canvas.create_window(540, 1000, window=self.cam_panel)
+        
+        # AI(self.canvas, self.root, self.cam_panel).neck_angle_value()
         
     def setting(self):
         self.black_img = Image.open("img/1B1B1B.png")
