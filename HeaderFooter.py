@@ -131,6 +131,7 @@ class Header_footer:
 
         self.canvas.create_window(540, 1000, window=self.star_button)
         Health.HealthReport(self.canvas, self.root)
+        
     def check(self):
         self.black_img = Image.open("img/1B1B1B.png")
         self.black_img = self.black_img.resize((1050, 1200))
@@ -147,12 +148,20 @@ class Header_footer:
         self.root.black_img = ImageTk.PhotoImage(self.black_img)
         
         
-        self.star_button = Label(self.root,image=self.root.black_img,width=1050,height=1200, bg="white",borderwidth=0, highlightthickness=0)
+        self.star_button = Label(self.root,image=self.root.black_img,width=1050,height=1200, bg="white",borderwidth=0, 
+                                 highlightthickness=0)
         self.canvas.create_window(540, 1000, window=self.star_button)
-        self.cam_panel = Label(self.root,width=50,height=50, bg="white",borderwidth=0, anchor='center',highlightthickness=0)
-        self.canvas.create_window(540, 1000, window=self.cam_panel)
+        self.cam_panel = Label(self.root,text="카메라 준비중...",font=('NanumGothic', 30),width=40,height=12, bg="white",
+                               borderwidth=0, anchor='center',highlightthickness=0)
+        self.canvas.create_window(540, 900, window=self.cam_panel)
         
-        # AI(self.canvas, self.root, self.cam_panel).neck_angle_value()
+        error_check = AI(self.canvas, self.root, self.cam_panel).neck_angle_value()
+        
+        if error_check == 1:
+            print("정상 적으로 측정이 완료되었습니다")
+        elif error_check == 11:
+            print("측정을 실패하였습니다. 다시 시도해 주세요")
+        
         
     def setting(self):
         self.black_img = Image.open("img/1B1B1B.png")
