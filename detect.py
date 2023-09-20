@@ -2,6 +2,12 @@ import cv2
 import mediapipe as mp
 import threading
 import os
+import numpy as np
+
+from PIL import Image
+from PIL import ImageTk
+from tkinter import *
+# gui관련 사용 라이브 러리
 
 from Module.Frame.setting import frame_setting, get_shape
 from Module.Frame.guide import UserGuide
@@ -12,9 +18,12 @@ from Module.detect.imagedetect import detect
 result_value = []
 
 class AI:
-    def __init__(self):
+    def __init__(self, canvas, root, cam_panel):
         self.result = None
-
+        self.canvas = canvas
+        self.root = root
+        self.cam_panel = None
+        self.cam_panel = cam_panel
     def create_folder(self, folder_path):
         if not os.path.exists(folder_path):
             os.makedirs(folder_path)
@@ -57,7 +66,7 @@ class AI:
             ret, frame = cap.read()
             if not ret:
                 break
-
+            
             origin_frame = frame.copy()
 
             frame_rgb = frame_setting(frame)
@@ -100,7 +109,7 @@ class AI:
                         count += 1
                         if count == 40:
                             cv2.imwrite('Result/UserPicture.jpeg', origin_frame)
-
+                            
                         if cv2.waitKey(1) == 27 or count == 60:
                             self.result = detect()
                             break
@@ -112,6 +121,11 @@ class AI:
                     center.center_rect(second_rect, 0)
 
             cv2.imshow('Main', frame)
+            
+            # print(type(frame))
+            
+            # self.cam_panel.image = frame
+            # self.cam_panel.configure(image=frame)
 
             if cv2.waitKey(1) == 27:
                 break
