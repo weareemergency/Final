@@ -158,9 +158,9 @@ class Header_footer:
         error_check = AI(self.canvas, self.root, self.cam_panel).neck_angle_value()
         
         if error_check == 1:
-            print("정상 적으로 측정이 완료되었습니다")
+            print("정상 적으로 측정이 완료되었다.")
         elif error_check == 11:
-            print("측정을 실패하였습니다. 다시 시도해 주세요")
+            print("측정을 실패했자나. 다시 시도해라")
         
         
     def setting(self):
