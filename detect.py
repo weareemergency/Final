@@ -40,6 +40,7 @@ class AI:
             pass
 
         print(f"neck_angle_value : {self.result}")
+        
     def update_cam(self):
         cap = cv2.VideoCapture(0)
         
