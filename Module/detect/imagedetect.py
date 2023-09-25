@@ -6,7 +6,7 @@ from Module.Draw.draw import Angle
 
 def detect():
     result_value = []
-    xy_list = []
+    # xy_list = []
     path = "weights/Version_1.pt"
     image_path = "Result/UserPicture.jpeg"
 
@@ -25,6 +25,7 @@ def detect():
 
         if confidence > 0.51111:
             # print(len(label))
+            xy_list = []
             if label == 'number7' or label == 'ear':
                 if label == 'number7':
                     number7 = Angle(image, int((x_min + x_max) / 2), int((y_min + y_max) / 2))

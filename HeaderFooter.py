@@ -6,6 +6,8 @@ from pprint import pprint
 from PIL import ImageTk, Image
 from detect import AI
 from todo import TodoList
+from gtts import gTTS
+import playsound
 
 class Header_footer:
     # write_header 함수를 실행하여 label, button을 출력한다
@@ -160,7 +162,7 @@ class Header_footer:
         if error_check == 1:
             print("정상 적으로 측정이 완료되었다.")
         elif error_check == 11:
-            print("측정을 실패했자나. 다시 시도해라")
+            print("측정을 실패")
         
         
     def setting(self):
@@ -178,7 +180,7 @@ class Header_footer:
         todo_img = Image.open("img/todo.png")
         hfile_img = Image.open("img/hfile.png")
         searcheck_img = Image.open("img/searcheck.png")
-        aram_img = Image.open("img/aram.png")
+        aram_img = Image.open("img/checking_neck.png")
         setting_img = Image.open("img/setting_menu.png")
         # 이미지를 가져온다
 

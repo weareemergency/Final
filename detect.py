@@ -4,7 +4,9 @@ import threading
 import os
 import PIL.Image, PIL.ImageTk
 from tkinter import *
+import playsound
 
+import main
 from Module.Frame.setting import frame_setting, get_shape
 from Module.Frame.guide import UserGuide
 from Module.Draw.draw import Draw
@@ -29,17 +31,27 @@ class AI:
 
     def neck_angle_value(self):
         global result_value
-        result = self.main()
-
-        try:
-            if result is not None:  # 반환값이 None이 아닐 때만 더함
-                result_value.extend(result) 
-            else:
-                pass
-        except TypeError:
-            pass
-
-        print(f"neck_angle_value : {self.result}")
+        thread = threading.Thread(target=self.music)
+        thread.daemon = True
+        thread.start()
+        self.main()
+        
+        #print(f"neck_angle_value : {self.result}")
+        
+    def music(self):
+        #측정 시작 음성
+        filename = './mpfile/checking.mp3'
+        playsound.playsound(filename)
+    
+    def music2(self):
+        #측정 성공 음성
+        filename = './mpfile/finish_checking.mp3'
+        playsound.playsound(filename)
+        
+    def music3(self):
+        #측정 실패시 음성
+        filename = './mpfile/fail.mp3'
+        playsound.playsound(filename)
         
     def update_cam(self):
         cap = cv2.VideoCapture(0)
@@ -96,16 +108,16 @@ class AI:
                     ifin_1 = (x1 <= nose_x <= x2) and (y1 <= nose_y <= y2)
                     ifin_2 = (x1 <= r_ear_x <= x2) and (y1 <= r_ear_y <= y2) and (x1 <= l_ear_x <= x2) and (y1 <= l_ear_y <= y2)
                     ifin_3 = (x1 <= right_shoulder_x <= x2) and (y1 <= right_shoulder_y <= y2) and (x1 <= left_shoulder_x <= x2) and (y1 <= left_shoulder_y <= y2)
-
+                    
                     if ifin_1 and ifin_2 and ifin_3:
                         if (abs(ear_diff_x) - abs(ear_diff_y)) < 40: # 40 부분은 때에 따라서 무조건 수정
                             center.center_rect(first_rect, 1)
                             center.center_rect(second_rect, 1)
                             count += 1
-                            if count == 40:
+                            if count == 85:
                                 cv2.imwrite('Result/UserPicture.jpeg', origin_frame)
 
-                            if cv2.waitKey(1) == 27 or count == 60:
+                            if cv2.waitKey(1) == 27 or count == 100: # 여기가 수정부분
                                 self.result = detect()
                                 break
                         else:
@@ -117,7 +129,7 @@ class AI:
 
                 # cv2.imshow('Main', frame)
                 
-                src = cv2.resize(frame, (640, 400))
+                src = cv2.resize(frame, (950, 530))
                 image = cv2.cvtColor(src, cv2.COLOR_BGR2RGB)
                 image = PIL.Image.fromarray(image)
                 imgtk = PIL.ImageTk.PhotoImage(image=image)
@@ -128,10 +140,29 @@ class AI:
                 if cv2.waitKey(1) == 27:
                     break
             except:
+                thread = threading.Thread(target=self.music3)
+                thread.daemon = True
+                thread.start()
+                
                 print("측정에 실패하였습니다(update_cam 함수)")
+                
+                black_img = PIL.Image.open("img/1B1B1B.png")
+                
+                black_img = black_img.resize((1050, 1200))
+                black_img = PIL.ImageTk.PhotoImage(black_img)
+
+                star_button = Label(self.root,image=black_img,width=1050,height=1200, bg="black",borderwidth=0, highlightthickness=0)
+
+                self.canvas.create_window(540, 1000, window=star_button)
+                
+                main.main_menu(self.canvas, self.root)
                 cap.release()
-                #cv2.destroyAllWindows()
                 return 11
+            
+        thread = threading.Thread(target=self.music2)
+        thread.daemon = True
+        thread.start()
+        
         cap.release()
         cv2.destroyAllWindows()
         return 1

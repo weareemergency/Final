@@ -1,5 +1,7 @@
 import cv2, pymysql
-
+import playsound
+import threading
+            
 class Draw:
     def __init__(self, frame, width, hegiht):
         self.frame = frame
@@ -20,6 +22,9 @@ class Draw:
     def body_circle(self, x, y):
         cv2.circle(self.frame, (x, y), 3, self.red, -1)
 
+def sound():
+    filename = '../../mpfile/checking.mp3'
+    playsound.playsound(filename)
 
 class Angle:
     def __init__(self, image, x, y):
@@ -42,6 +47,10 @@ class Angle:
             result = pt2 / pt1
 
             print(result)
+            
+            
+            # threading_sound = threading.Thread(target=sound())
+            # threading_sound.start()
             
             host = '127.0.0.1'
             user = 'root'
