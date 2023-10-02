@@ -2,19 +2,16 @@ import pymysql, datetime
 
 class TodoDataBase():
     def __init__(self):
-        self.host = '127.0.0.1'
-        self.user = 'root'
-        self.password = '1234'
-        self.database = 'test'
+        self.host = 'emer.iptime.org'
+        self.user = 'emer'
+        self.password = 'emergency_team_2434'
+        self.database = 'emergency'
         self.connection = pymysql.connect(host=self.host, user=self.user, password=self.password, database=self.database)
-        
-        print("hello")
+        print("db 연결중...")
 
     def connect_db(self):
         if self.connection:
-            # print("MySQL Connect")
             return True
-            
         else:
             print("fail")
             return False
@@ -22,14 +19,16 @@ class TodoDataBase():
 
     def select_todo(self, id):
         if TodoDataBase.connect_db(self):
-            cursor = self.connection.cursor()
-            query = f"SELECT * FROM todolist where id = {id}"  
-            cursor.execute(query)
+            try:
+                cursor = self.connection.cursor()
+                query = f"SELECT * FROM todolist where id = {id}"  
+                cursor.execute(query)
 
-            result = cursor.fetchall()
-            
-            return result
-        
+                result = cursor.fetchall()
+                
+                return result
+            finally:
+                cursor.close()
         else:
             print("error")
 

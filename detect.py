@@ -5,7 +5,7 @@ import os
 import PIL.Image, PIL.ImageTk
 from tkinter import *
 import playsound
-
+from PIL import ImageTk, Image
 import main
 from Module.Frame.setting import frame_setting, get_shape
 from Module.Frame.guide import UserGuide
@@ -146,14 +146,15 @@ class AI:
                 
                 print("측정에 실패하였습니다(update_cam 함수)")
                 
-                black_img = PIL.Image.open("img/1B1B1B.png")
+                self.black_img = Image.open("img/1B1B1B.png")
+                self.black_img = self.black_img.resize((1050, 1200))
+                self.root.black_img = ImageTk.PhotoImage(self.black_img)
                 
-                black_img = black_img.resize((1050, 1200))
-                black_img = PIL.ImageTk.PhotoImage(black_img)
-
-                star_button = Label(self.root,image=black_img,width=1050,height=1200, bg="black",borderwidth=0, highlightthickness=0)
-
-                self.canvas.create_window(540, 1000, window=star_button)
+                
+                self.star_button = Label(self.root,image=self.root.black_img,width=1050,height=1200, bg="white",borderwidth=0, 
+                                        highlightthickness=0)
+                self.canvas.create_window(540, 1000, window=self.star_button)
+                
                 
                 main.main_menu(self.canvas, self.root)
                 cap.release()
