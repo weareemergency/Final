@@ -7,8 +7,7 @@ class TodoDataBase():
         self.password = 'emergency_team_2434'
         self.database = 'emergency'
         self.connection = pymysql.connect(host=self.host, user=self.user, password=self.password, database=self.database)
-        print("db 연결중...")
-
+        
     def connect_db(self):
         if self.connection:
             return True
@@ -19,29 +18,28 @@ class TodoDataBase():
 
     def select_todo(self, id):
         if TodoDataBase.connect_db(self):
-            try:
-                cursor = self.connection.cursor()
-                query = f"SELECT * FROM todolist where id = {id}"  
-                cursor.execute(query)
-
-                result = cursor.fetchall()
-                
-                return result
-            finally:
-                cursor.close()
+            cursor = self.connection.cursor()
+            query = f"SELECT * FROM todo where userid = '{id}' order by todonum desc limit 9;"
+            cursor.execute(query)
+            
+            result = cursor.fetchall()
+            cursor.close()
+            self.connection.close()
+            return result
         else:
             print("error")
 
     def select_rank(self):
         if TodoDataBase.connect_db(self):
             cursor = self.connection.cursor()
-            query = f"select Username from ranking;"  
+            query = f"select username from todo, users where todo.userid = users.userid group by todo.userid order by count(*) desc;"  
             cursor.execute(query)
-
             result = cursor.fetchall()
             
+            cursor.close()
+            self.connection.close()
+            
             return result
-        
         else:
             print("error")
         

@@ -32,8 +32,6 @@ class RankList:
     def rank(self):
         db = TodoDataBase()
         if db:
-            print("MySQL 연결에 성공하였습니다.")
-
             self.root.crow_icon = RankList.image_open(self.crow_icon_path, (50,50))
             self.root.ract = RankList.image_open(self.ract_path, (916, 673))
             self.root.line = RankList.image_open(self.line_path, (10, 520))
@@ -64,7 +62,9 @@ class RankList:
             self.rank_label2 = Label(self.root, font=('NanumGothic', 23,'bold'), anchor='w',height=5, width=16,text=text,fg="black", bg="white")
             self.rank_label3 = Label(self.root, font=('NanumGothic', 23,'bold'), anchor='w',height=5, width=16,text=text,fg="black", bg="white")
             data = db.select_rank()
+            count = 0
             for i in range(len(data)):
+                count = count + 1
                 if i == 0:
                     self.rank_label1.config(text=f'1위 {data[i][0]}님')
                 elif i==1:
@@ -74,6 +74,18 @@ class RankList:
                 else:
                     self.list_rank.insert(END, f'{i+1}위 {data[i][0]}님')
                     self.list_rank.insert(END, '')
+            
+            if count != 8:
+                for i in range(count, 9):
+                    if i == 0:
+                        self.rank_label1.config(text=f'.')
+                    elif i==1:
+                        self.rank_label2.config(text=f'.')
+                    elif i == 2:
+                        self.rank_label3.config(text=f'.')
+                    else:
+                        self.list_rank.insert(END, f'.')
+                        self.list_rank.insert(END, '')
             
             self.list_rank.bindtags((self.list_rank, self.root, "all"))
                 

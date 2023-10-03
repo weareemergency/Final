@@ -44,12 +44,12 @@ class Header_footer:
         current_time = datetime.now().strftime("%H:%M")
         self.time_label.config(text=current_time)
         self.Yemd_label.after(1000, self.update_time)
-        # 시분초를 가져와 업데이트 하는 함수 이다
+            # 시분초를 가져와 업데이트 하는 함수 이다
 
     def update_Ymd(self):
         current_Ymd = datetime.now().strftime("%y년%m월%d일")
         self.Yemd_label.config(text=current_Ymd)
-        self.Yemd_label.after(1000, self.update_Ymd)
+        self.Yemd_label.after(10000, self.update_Ymd)
         # 년월일을 가져와 업데이트 하는 함수
 
     def Thread_time(self):
@@ -60,6 +60,7 @@ class Header_footer:
         # thread 사용을 허용 해준다
         thread.start()
         # thread를 시작한다
+        threading.Timer(10, self.Thread_time).start()
 
     def startThread_Ymd(self):
         # 년월일 쓰레드 생성
@@ -69,8 +70,10 @@ class Header_footer:
         # thread 사용을 허용 해준다
         thread.start()
         #쓰레드를 시작한다
+        threading.Timer(10, self.startThread_Ymd).start()
 
     def update_weather(self):
+        
         # 날씨를 지속 적으로 파싱 한다
         html = requests.get('https://search.naver.com/search.naver?query=부산강서구가락동날씨')
         # html 주소를 가져온다
@@ -110,6 +113,7 @@ class Header_footer:
         # thread 사용을 허용 해준다
         thread.start()
         #쓰레드를 시작한다
+        threading.Timer(10, self.Thead_weather).start()
 
 
     # ----------- footer line
@@ -145,6 +149,7 @@ class Header_footer:
         Health.HealthList(self.canvas, self.root)
     
     def detect(self):
+        # 거북목 측정 함수
         self.black_img = Image.open("img/1B1B1B.png")
         self.black_img = self.black_img.resize((1050, 1200))
         self.root.black_img = ImageTk.PhotoImage(self.black_img)
