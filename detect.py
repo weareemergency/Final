@@ -6,7 +6,9 @@ import PIL.Image, PIL.ImageTk
 from tkinter import *
 import playsound
 from PIL import ImageTk, Image
-import main
+
+import main, Health # class 가져 오기
+
 from Module.Frame.setting import frame_setting, get_shape
 from Module.Frame.guide import UserGuide
 from Module.Draw.draw import Draw
@@ -119,6 +121,8 @@ class AI:
 
                             if cv2.waitKey(1) == 27 or count == 100: # 여기가 수정부분
                                 self.result = detect()
+                                print('결과 측정 성공시')
+                                print(self.result)
                                 break
                         else:
                             center.center_rect(first_rect, 1)
@@ -145,7 +149,7 @@ class AI:
                 thread.start()
                 
                 print("측정에 실패하였습니다(update_cam 함수)")
-                
+                cap.release()
                 self.black_img = Image.open("img/1B1B1B.png")
                 self.black_img = self.black_img.resize((1050, 1200))
                 self.root.black_img = ImageTk.PhotoImage(self.black_img)
@@ -157,7 +161,9 @@ class AI:
                 
                 
                 main.main_menu(self.canvas, self.root)
+                
                 cap.release()
+                
                 return 11
             
         thread = threading.Thread(target=self.music2)
@@ -166,6 +172,15 @@ class AI:
         
         cap.release()
         cv2.destroyAllWindows()
+        
+        self.black_img = Image.open("img/1B1B1B.png")
+        self.black_img = self.black_img.resize((1050, 1200))
+        self.root.black_img = ImageTk.PhotoImage(self.black_img)
+
+        self.star_button = Label(self.root,image=self.root.black_img,width=1050,height=1200, bg="white",borderwidth=0, highlightthickness=0)
+
+        self.canvas.create_window(540, 1000, window=self.star_button)
+        Health.HealthList(self.canvas, self.root)
         return 1
         
     def main(self):

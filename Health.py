@@ -10,7 +10,7 @@ from matplotlib.figure import Figure
 from matplotlib.backends.backend_tkagg import (FigureCanvasTkAgg,
 NavigationToolbar2Tk)
 from scipy.interpolate import make_interp_spline
-
+from database import Graph
 
 class HealthReport:
     def __init__(self, canvas, root):
@@ -94,64 +94,107 @@ class HealthList:
         self.health()
 
     def health(self):
-        self.ract = Image.open("img/rectangle1.png")
-        self.ract = self.ract.resize((918, 645))
-        self.root.ract = ImageTk.PhotoImage(self.ract)
+        A = Graph()
+        
+        result = A.select_health('jiseok')
+        
+        if result:
+            self.ract = Image.open("img/rectangle1.png")
+            self.ract = self.ract.resize((918, 645))
+            self.root.ract = ImageTk.PhotoImage(self.ract)
 
-        self.leg = Image.open("img/Legend.png")
-        self.leg = self.leg.resize((93, 43))
-        self.root.leg = ImageTk.PhotoImage(self.leg)
+            self.leg = Image.open("img/Legend.png")
+            self.leg = self.leg.resize((93, 43))
+            self.root.leg = ImageTk.PhotoImage(self.leg)
 
-        self.leg2 = Image.open("img/Legend2.png")
-        self.leg2 = self.leg2.resize((93, 43))
-        self.root.leg2 = ImageTk.PhotoImage(self.leg2)
+            self.leg2 = Image.open("img/Legend2.png")
+            self.leg2 = self.leg2.resize((93, 43))
+            self.root.leg2 = ImageTk.PhotoImage(self.leg2)
 
-        self.health_result = Label(self.root, font=('NanumGothic', 25, 'bold'), text='양유빈님의 자세 분석 결과   >', fg="white",
-                                   bg="#1b1b1b")
-        self.rectangle = Label(self.root, image=self.root.ract, bg="#1b1b1b", borderwidth=0, highlightthickness=0)
-        self.date_label = Label(self.root, font=('NanumGothic', 20), width=50, anchor='w',
-                                text='2022년 5월까지의 데이터로 분석한 결과입니다', fg="black", bg="white")
-        self.check_health = Label(self.root, font=('NanumGothic', 23, 'bold'), width=40, anchor='w',
-                                  text='전주 대비 자세가 더 약화 되었습니다.', fg="black", bg="white")
-        self.details_sub_label = Label(self.root, font=('NanumGothic', 23, 'bold'), text='세부 사항', fg="black",
-                                       bg="white")
-        self.details_subtitle_label = Label(self.root, font=('NanumGothic', 20), text='Detail', fg="#7c7c7c",
-                                            bg="white")
-        self.details = Label(self.root, font=('NanumGothic', 18), wraplength=300, width=20, height=9, anchor='nw',
-                             text="", fg="black", bg="white", justify='left')
-        self.suggestion = Label(self.root, font=('NanumGothic', 22, 'bold'), width=40, justify='center', fg="black",
-                                bg="#ADFFD8")
-        self.grap_label1 = Label(self.root, image=self.root.leg, bg="white", borderwidth=0, highlightthickness=0)
-        self.grap_label2 = Label(self.root, image=self.root.leg2, bg="white", borderwidth=0, highlightthickness=0)
-        self.details['text'] = "- 전 주 대비 라운드숄더가 더 심해졌습니다. 수치는 11.8 증가하였습니다. \n" + "- 거북목 자세는 전 주 대비향상 되었습니다."
-        self.suggestion['text'] = "라운드 숄더 교정 스트레칭을 하는 것을 추천 드립니다."
+            self.health_result = Label(self.root, font=('NanumGothic', 25, 'bold'), text='이지석님의 자세 분석 결과   >', fg="white",
+                                    bg="#1b1b1b")
+            self.rectangle = Label(self.root, image=self.root.ract, bg="#1b1b1b", borderwidth=0, highlightthickness=0)
+            self.date_label = Label(self.root, font=('NanumGothic', 20), width=50, anchor='w', fg="black", bg="white")
+            self.check_health = Label(self.root, font=('NanumGothic', 23, 'bold'), width=40, anchor='w', fg="black", bg="white")
+            self.details_sub_label = Label(self.root, font=('NanumGothic', 23, 'bold'), text='세부 사항', fg="black",
+                                        bg="white")
+            self.details_subtitle_label = Label(self.root, font=('NanumGothic', 20), text='Detail', fg="#7c7c7c",
+                                                bg="white")
+            self.details = Label(self.root, font=('NanumGothic', 18), wraplength=300, width=20, height=9, anchor='nw', fg="black", bg="white", justify='left')
+            self.suggestion = Label(self.root, font=('NanumGothic', 22, 'bold'), width=40, justify='center', fg="black",
+                                    bg="#ADFFD8")
+            self.grap_label1 = Label(self.root, image=self.root.leg, bg="white", borderwidth=0, highlightthickness=0)
+            self.grap_label2 = Label(self.root, image=self.root.leg2, bg="white", borderwidth=0, highlightthickness=0)
+            
+            count = 0
+            data = None
+            avg_data = None
+            
+            print(len(result))
+            
+            if(len(result) == 0):
+                self.date_label['text'] = "최신 측정을 해주세요"
+            elif(len(result) != 7):
+                self.date_label['text'] = "측정 데이터가 더 필요합니다"
+                if result[0][1] < 1:
+                    self.check_health['text'] = "거북목이 감지 되었습니다"
+                    self.details['text'] = f"- 거북목이 감지 되었습니다.\n" + "- 정확한 측정은 전문가와 상담해주세요"
+                    self.suggestion['text'] = "거북목 교정 스트레칭을 하는 것을 추천 드립니다."
+                else:
+                    self.check_health['text'] = "거북목이 감지 되지 않았습니다"
+                    self.details['text'] = f"- 거북목이 감지 되지 않았습니다.\n" + "- 정확한 측정은 전문가와 상담해주세요"
+                    self.suggestion['text'] = "꾸준한 운동을 해주세요"
+            else:
+                for i in result:
+                    count = count + 1
+                    if data == None:
+                        data=i[1]
+                    else:
+                        if avg_data == None:
+                            avg_data = i[1]
+                        avg_data = (i[1]+avg_data)/2
+                        
+                if data < 1 :
+                    self.date_label['text'] = f"{result[6][2]} ~ {result[0][2]} 까지의 데이터로 분석한 결과입니다"
+                    if data > avg_data:                 
+                        self.check_health['text'] = "저번 측정 대비 자세가 더 약화 되었습니다"
+                        self.details['text'] = f"- 거북목이 감지되었지만 전 주 대비향상 되었습니다. 수치는 {data-avg_data} 증가하였습니다. \n" + "- 이대로 유지해주세요. 정확한 측정은 전문가와 상담해주세요"
+                    elif data < avg_data:
+                        self.check_health['text'] = "저번 측정 대비 자세가 더 악화 되었습니다"
+                        self.details['text'] = f"- 거북목이 감지 되었습니다. 수치는 {avg_data-data} 감소하였습니다. \n" + "- 정확한 측정은 전문가와 상담해주세요"
+                    self.suggestion['text'] = "거북목 교정 스트레칭을 하는 것을 추천 드립니다."
+                else :
+                    self.date_label['text'] = f"{result[6][2]} ~ {result[0][2]} 까지의 데이터로 분석한 결과입니다"
+                    self.check_health['text'] = "거북목이 감지되지 않았습니다"
+            
+            self.canvas.create_window(250, 1170, window=self.grap_label2)
+            self.canvas.create_window(360, 1170, window=self.grap_label1)
+            self.canvas.create_window(540, 1230, window=self.suggestion)
+            self.canvas.create_window(810, 1060, window=self.details)
+            self.canvas.create_window(830, 900, window=self.details_subtitle_label)
+            self.canvas.create_window(720, 900, window=self.details_sub_label)
+            self.canvas.create_window(505, 760, window=self.check_health)
+            self.canvas.create_window(525, 720, window=self.date_label)
+            self.canvas.create_window(285, 620, window=self.health_result)
+            self.canvas.create_window(540, 980, window=self.rectangle)
 
-        self.canvas.create_window(250, 1170, window=self.grap_label2)
-        self.canvas.create_window(360, 1170, window=self.grap_label1)
-        self.canvas.create_window(540, 1230, window=self.suggestion)
-        self.canvas.create_window(810, 1060, window=self.details)
-        self.canvas.create_window(830, 900, window=self.details_subtitle_label)
-        self.canvas.create_window(720, 900, window=self.details_sub_label)
-        self.canvas.create_window(505, 760, window=self.check_health)
-        self.canvas.create_window(525, 720, window=self.date_label)
-        self.canvas.create_window(285, 620, window=self.health_result)
-        self.canvas.create_window(540, 980, window=self.rectangle)
+            self.plot()
 
-        self.plot()
-
-        self.grap_label2.lift()
-        self.details_sub_label.lift()
-        self.details.lift()
-        self.grap_label1.lift()
+            self.grap_label2.lift()
+            self.details_sub_label.lift()
+            self.details.lift()
+            self.grap_label1.lift()
+        else:
+            print('error')
 
     def plot(self):
         # 그래프를 그리는 함수이다
         fig = Figure(figsize=(6, 3), dpi=100)
 
         x = np.array([1, 2, 3, 4, 5, 6, 7])
-        y = np.array([100, 100, 100, 100, 10, 10, 50])
+        y = np.array([0, 0, 0, 0, 0, 0, 0])
         x2 = np.array([1, 2, 3, 4, 5, 6, 7])
-        y2 = np.array([0, 0, 0, 100, 50, 50, 50])
+        y2 = np.array([0, 0, 0, 0, 0, 0, 0])
 
         model = make_interp_spline(x, y)
         model2 = make_interp_spline(x2, y2)

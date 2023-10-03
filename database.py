@@ -32,7 +32,7 @@ class TodoDataBase():
     def select_rank(self):
         if TodoDataBase.connect_db(self):
             cursor = self.connection.cursor()
-            query = f"select username from todo, users where todo.userid = users.userid group by todo.userid order by count(*) desc;"  
+            query = f"select username from todo, users where todo.userid = users.userid and complete = 'Y' group by todo.userid order by count(*) desc;"
             cursor.execute(query)
             result = cursor.fetchall()
             
@@ -69,10 +69,24 @@ class Graph(TodoDataBase):
         
         else:
             print("error")
-
+    
+    def select_health(self, id):
+        if self.connect_db:
+            cursor = self.connection.cursor()
+            query = f"select userid, avg(angle), detectdate, checkcom from neckdata where userid = '{id}' group by detectdate order by detectdate desc limit 7;"
+            cursor.execute(query)
+            result = cursor.fetchall() # db 결과 저장
+            
+            cursor.close()
+            self.connection.close()
+            
+            return result
+        else:
+            print("error")
 
 if __name__ == "__main__":
-    A = TodoDataBase()
+    A = Graph()
     A.connect_db()
-    result = A.select_todo(1) # 1은 아이디 번호를 말함. 
+    result = A.select_health('jiseok') # 1은 아이디 번호를 말함. 
+    
     print(result)
