@@ -3,14 +3,11 @@ import mediapipe as mp
 import threading
 import os
 import PIL.Image, PIL.ImageTk
-from tkinter import *
 import playsound
-from PIL import ImageTk, Image
-
 import main, Health # class 가져 오기
 
-from Module.Frame.setting import frame_setting, get_shape
-from Module.Frame.guide import UserGuide
+from tkinter import *
+from PIL import ImageTk, Image
 from Module.Draw.draw import Draw
 from Module.Draw.XY import Vertex, Body
 from Module.detect.imagedetect import detect
@@ -58,7 +55,7 @@ class AI:
     def update_cam(self):
         cap = cv2.VideoCapture(0)
         
-        width, height = get_shape(int(cap.get(cv2.CAP_PROP_FRAME_WIDTH)), int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT)))
+        width, height = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH)), int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
         vers = Vertex(width, height)
         print("width, height", width, height)
         x1, x2, y1, y2 = vers.rect_vertex()
@@ -78,7 +75,7 @@ class AI:
             if not ret:
                 break
             try:
-                frame_rgb = frame_setting(frame)
+                frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
                 results = pose.process(frame_rgb)
 
                 if results.pose_landmarks:
@@ -187,27 +184,6 @@ class AI:
         thread = threading.Thread(target=self.update_cam)
         thread.daemon = True
         thread.start()
-
-"""
-def db(result_value):
-    import pymysql
-
-    host = '127.0.0.1'
-    user = 'root'
-    password = '1234'
-    database = 'test'
-    connection = pymysql.connect(host=host, user=user, password=password, database=database)
-
-    cursor = connection.cursor()
-    query = f"INSERT INTO angle (id, username, result_value) VALUES (6, '김아무개', {str(result_value)})"
-    cursor.execute(query)
-
-    connection.commit()  # 커밋을 해야 변경이 반영됨
-    cursor.close()
-    connection.close()
-
-    print("DB 전송 완료")
-"""
 
 if __name__ == "__main__":
     root = Tk()  # Tk 생성
