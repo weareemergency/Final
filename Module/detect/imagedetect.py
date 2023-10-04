@@ -35,7 +35,7 @@ def detect():
 
                 if label == 'ear':
                     ear = Angle(image, int((x_min + x_max) / 2), int((y_min + y_max) / 2))
-                    ear_x, ear_y = ear.return_xy()
+                    ear_x, ear_y = ear.return_xy() # 여기까지
                     ear.position_rect(x_min, y_min, x_max, y_max, ear_x, ear_y, f"{label}: {confidence:.2f}")
                     xy_list.append([ear_x, ear_y])
 
