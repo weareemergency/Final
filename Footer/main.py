@@ -24,7 +24,8 @@ class SettingPart:
 
     def setting_image(self):  # setting 이미지 불러옴 파일
         # print("값 확인", self.image_path["setting_icon"])
-        self.root.setting_icon = ImageTk.PhotoImage(Image.open(self.image_path["setting_icon"]).resize((50, 50)))  # 톱니 바퀴 사진
+        self.root.setting_icon = ImageTk.PhotoImage(
+            Image.open(self.image_path["setting_icon"]).resize((50, 50)))  # 톱니 바퀴 사진
         self.root.white_background = ImageTk.PhotoImage(Image.open(self.image_path["background"]))  # 뒤 흰색 배경
         self.root.on = ImageTk.PhotoImage(Image.open(self.image_path["off"]))  # 스위치 on
         self.root.off = ImageTk.PhotoImage(Image.open(self.image_path["on"]))  # 스위치 off
@@ -54,28 +55,10 @@ class SettingPart:
 
         count = 0
         for coordinate in setting_coordinates.values():
-            label[count].lift()
             self.canvas.create_window(coordinate[0], coordinate[1], window=label[count])  # 사용자 이름
+            if 1 <= count <= 4:
+                label[count].lift()
             count += 1
-
-        # self.canvas.create_window(200, 200, window=label[1])  # 전체 알림
-        # self.canvas.create_window(330, 330, window=label[6])  # 설정 아이콘
-        # self.canvas.create_window(218, 620, window=label[0])  # 사용자 이름
-
-        # for key, value in setting_coordinates.items():
-        #     label[count].lift()
-        #
-        #     count += 1
-
-
-
-
-
-
-
-
-    def start(self):
-        pass
 
 
 if __name__ == "__main__":
@@ -87,7 +70,6 @@ if __name__ == "__main__":
     canvas.pack(fill=BOTH, expand=TRUE)
     # footer.footer_menu(canvas, root)
     SettingPart(canvas, root).create_window()
-    root.geometry("1000x1920")
+    root.geometry("1920x1080")
     # 화면 크기를 지정한다
     root.mainloop()
-
