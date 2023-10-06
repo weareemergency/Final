@@ -1,4 +1,4 @@
-from tkinter import *
+from tkinter import Tk, Canvas, BOTH, TRUE
 from PIL import ImageTk, Image
 
 from coordinate import setting
