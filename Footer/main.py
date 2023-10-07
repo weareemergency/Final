@@ -34,7 +34,7 @@ class SettingPart:
         aram_label = self.label(self.root, "전체알림", 19).label_text(False)  # UI -> 전체 알림
         medicine_label = self.label(self.root, "약 복용 알림", 19).label_text(False)  # UI -> 약 복용 알림
         result_label = self.label(self.root, "자세 분석 결과 제공", 19).label_text(False)  # UI -> 자체 분석 결과 제공
-        api_label = self.label(self.root, "API", 19).label_text(False)  # UI -> API
+        api_label = self.label(self.root, "심평원 API 동의", 19).label_text(False)  # UI -> API
 
         label_list = [show_name, aram_label, medicine_label, result_label, api_label]  # 전부 리스트로 묶어서 리턴
         return label_list
@@ -94,5 +94,5 @@ if __name__ == "__main__":
     canvas = Canvas(root, bg="#1b1b1b")
     canvas.pack(fill=BOTH, expand=TRUE)
     SettingPart(canvas, root).create_window()
-    root.geometry("1920x1080")
+    root.geometry("1080x1920")
     root.mainloop()

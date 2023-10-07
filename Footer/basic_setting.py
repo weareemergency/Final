@@ -3,22 +3,21 @@
 """
 from tkinter import Label, Button
 
-
 def setting_image_path():  # setting_image 파일 경로
     images = {
-        "setting_icon": "../img/setting.png",  # 설정 아이콘 (톱니바퀴)
-        "background": "../img/Rectangle_setting.png",  # 뒤 배경 (흰색)
-        "on": "../img/switch_on.png",  # 스위치 on
-        "off": "../img/switch_off.png"  # 스위치 off
+        "setting_icon": r"C:/Users/user/Desktop/python/gui_make/img/setting.png",  # 설정 아이콘 (톱니바퀴)
+        "background": r"C:/Users/user/Desktop/python/gui_make/img/Rectangle_setting.png",  # 뒤 배경 (흰색)
+        "on": r"C:/Users/user/Desktop/python/gui_make/img/switch_on.png",  # 스위치 on
+        "off": r"C:/Users/user/Desktop/python/gui_make/img/switch_off.png"  # 스위치 off
     }
     return images
 
 
 def todo_image_path():
     images = {
-        "complete": "../img/check.png",
-        "not_complete": "../img/ai_rect.png",
-        "todo_background": "../img/Rect16.png",
+        "complete": r"C:/Users/user/Desktop/python/gui_make/img/check.png",
+        "not_complete": r"C:/Users/user/Desktop/python/gui_make/img/ai_rect.png",
+        "todo_background": r"C:/Users/user/Desktop/python/gui_make/img/Rect16.png",
     }
     return images
 
