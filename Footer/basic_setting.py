@@ -1,7 +1,7 @@
 """
 글꼴, 이미지 파일 설정 파일
 """
-from tkinter import Label
+from tkinter import Label, Button
 
 
 def setting_image_path():  # setting_image 파일 경로
@@ -33,3 +33,6 @@ class SettingLabel:  # 설정 UI 부분
         image = image
         return Label(self.root, image=image, bg="#1b1b1b", borderwidth=0, highlightthickness=0)
 
+    def button(self, image):
+        image = image
+        return Button(self.root, image=image, bg="white", borderwidth=0, highlightthickness=0)
