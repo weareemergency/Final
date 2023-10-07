@@ -2,8 +2,8 @@ from tkinter import Tk, Canvas, BOTH, TRUE, Button
 from PIL import ImageTk, Image
 
 from coordinate import setting
-from basic_setting import SettingLabel  # 클래스
-from basic_setting import setting_image_path  # 함수
+from basic_setting import SettingLabel, setting_image_path
+from basic_setting import todo_image_path
 
 
 # DB 클래스 추가 필요!!!!!!
@@ -13,7 +13,7 @@ from basic_setting import setting_image_path  # 함수
 #         self.canvas = canvas
 #         self.root = root
 
-
+# =================================================== setting
 class SettingPart:
     def __init__(self, canvas, root):
         self.canvas = canvas
@@ -68,6 +68,24 @@ class SettingPart:
                 label[count].lift()
             self.canvas.create_window(coordinate[0], coordinate[1], window=label[count])  # 사용자 이름
             count += 1
+
+
+# =================================================== todo
+class TodoPart():
+    def __init__(self):
+        self.canvas = canvas
+        self.root = root
+        self.image_path = todo_image_path
+
+    def todo_image(self):
+        self.root.complete = ImageTk.PhotoImage(Image.open(self.image_path["complete"]).resize((49, 49)))
+        self.root.not_complete = ImageTk.PhotoImage(Image.open(self.image_path["not_complete"]).resize((49, 49)))
+        self.root.todo_background = ImageTk.PhotoImage(Image.open(self.image_path["todo_background"]).resize((915, 538)))
+
+    def todo_label_text(self):  # label 텍스트
+        pass
+
+
 
 
 if __name__ == "__main__":

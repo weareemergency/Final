@@ -14,6 +14,15 @@ def setting_image_path():  # setting_image 파일 경로
     return images
 
 
+def todo_image_path():
+    images = {
+        "complete": "../img/check.png",
+        "not_complete": "../img/ai_rect.png",
+        "todo_background": "../img/Rect16.png",
+    }
+    return images
+
+
 class SettingLabel:  # 설정 UI 부분
     def __init__(self, root, text, text_size):
         self.root = root
