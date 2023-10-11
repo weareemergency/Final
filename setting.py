@@ -3,9 +3,9 @@ from PIL import ImageTk, Image
 
 
 class SettingPart:
-    def __init__(self, canvas, root):
-        self.canvas = canvas
-        self.root = root
+    def __init__(self, can, ro):
+        self.canvas = can  # canvas
+        self.root = ro  # root
 
         self.show_name = None  # 이름 000님의 설정
         # label 부분
