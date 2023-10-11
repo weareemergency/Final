@@ -1,63 +1,89 @@
-from tkinter import *
-from tkinter import ttk
-from pprint import pprint
+from tkinter import Label, Button, Tk, Canvas, BOTH, TRUE
 from PIL import ImageTk, Image
-from pathlib import Path
-from tkinter.scrolledtext import ScrolledText
 
-class setting_menu:
+
+class SettingPart:
     def __init__(self, canvas, root):
         self.canvas = canvas
         self.root = root
-        self.rank()
-         
-    def rank(self):
-        self.setting_icon = Image.open("img/setting.png")
-        self.setting_icon = self.setting_icon.resize((50,50))
-        self.root.setting_icon = ImageTk.PhotoImage(self.setting_icon)
-        
-        self.rect1 = Image.open("img/Rectangle_setting.png")
-        self.root.rect1 = ImageTk.PhotoImage(self.rect1)
-        
-        self.switch_on = Image.open("img/switch_on.png")
-        self.root.switch_on = ImageTk.PhotoImage(self.switch_on)
 
-        self.switch_off = Image.open("img/switch_off.png")
-        self.root.switch_off = ImageTk.PhotoImage(self.switch_off)
+        self.show_name = None  # 이름 000님의 설정
+        # label 부분
+        self.label_aram = None
+        self.label_medicine = None
+        self.label_result = None
+        self.label_api = None
+        # 이미지
+        self.setting_icon = None  # 톱니바퀴 이미지
+        self.background_image = None  # 흰색 배경
+        # 스위치 부분
+        self.switch_api = None
+        self.switch_medicine = None
+        self.switch_aram = None
+        self.switch_result = None
 
-        self.setting_label = Label(self.root, font=('NanumGothic', 25, 'bold'), text='양유빈님의 설정       >',fg="white", bg="#1b1b1b")
-        self.setting_icon = Label(self.root,image=self.root.setting_icon, bg="#1b1b1b", borderwidth=0, highlightthickness=0)
-        self.setting_rect = Label(self.root,image=self.root.rect1, bg="#1b1b1b", borderwidth=0, highlightthickness=0)
-        self.aram_label = Label(self.root, font=('NanumGothic', 19), text='전체 알람',fg="black", bg="white")
-        self.switch_aram = Button(self.root, image=self.root.switch_on, bg="white",borderwidth=0, highlightthickness=0)
-        self.medi_label = Label(self.root, font=('NanumGothic', 19), text='약 복용 알람',fg="black", bg="white")
-        self.switch_medi = Button(self.root, image=self.root.switch_off, bg="white",borderwidth=0, highlightthickness=0)
-        self.result_label = Label(self.root, font=('NanumGothic', 19), text='자세 분석 결과 제공',fg="black", bg="white")
-        self.switch_result = Button(self.root, image=self.root.switch_on, bg="white",borderwidth=0, highlightthickness=0)
-        self.api_label = Label(self.root, font=('NanumGothic', 19), text='심평원 API 동의',fg="black", bg="white")
-        self.switch_api = Button(self.root, image=self.root.switch_on, bg="white",borderwidth=0, highlightthickness=0)
-        self.posture_analysis = Button(self.root, font=('NanumGothic', 19), text='자세 측정하러 가기 (처음 1회 실행)>',fg="black",bg="white",borderwidth=0, highlightthickness=0)
-        
-        self.canvas.create_window(680, 980, window=self.posture_analysis)
-        self.canvas.create_window(870, 900, window=self.switch_api)
-        self.canvas.create_window(570, 900, window=self.api_label)
-        self.canvas.create_window(870, 820, window=self.switch_result)
-        self.canvas.create_window(590, 820, window=self.result_label)
-        self.canvas.create_window(870, 740, window=self.switch_medi)
-        self.canvas.create_window(550, 740, window=self.medi_label)
-        self.canvas.create_window(870, 660, window=self.switch_aram)
-        self.canvas.create_window(534, 660, window=self.aram_label)
-        self.canvas.create_window(700, 815, window=self.setting_rect)
-        self.canvas.create_window(325, 620, window=self.setting_icon)
-        self.canvas.create_window(218, 620, window=self.setting_label)
-if __name__=="__main__":
-    root = Tk()#Tk 생성
-    # root.overrideredirect(True)
-    canvas = Canvas(root, bg="#1b1b1b") 
-    # gui화면 설정 배경 bg="색갈입력" 현재 #1b1b1b 설정됨
+        self.create_windows()  # UI 실행
+
+    def create_windows(self):
+        self.load_image()
+        self.create_labels()
+        self.create_buttons()
+        self.place()
+
+    def load_image(self):  # 이미지 로드
+        image_path = {
+            "setting_icon": "./img/setting.png",  # 설정 아이콘 (톱니바퀴)
+            "background": "./img/Rectangle_setting.png",  # 뒤 배경 (흰색)
+            "on": "./img/switch_on.png",  # 스위치 on
+            "off": "./img/switch_off.png"  # 스위치 off
+        }
+
+        self.root.setting_icon = ImageTk.PhotoImage(Image.open(image_path["setting_icon"]).resize((50, 50)))
+        self.root.background = ImageTk.PhotoImage(Image.open(image_path["background"]))
+        self.root.switch_on = ImageTk.PhotoImage(Image.open(image_path["on"]))
+        self.root.switch_off = ImageTk.PhotoImage(Image.open(image_path["off"]))
+
+    def create_labels(self):  # label 만드는 함수
+        font_name, bold = "NanumGothic", "bold"
+        self.show_name = Label(self.root, font=(font_name, 25, bold), text='양유빈님의 설정       >', fg="white", bg="#1b1b1b")
+        self.setting_icon = Label(self.root, image=self.root.setting_icon, bg="#1b1b1b", borderwidth=0,
+                                  highlightthickness=0)
+        self.background_image = Label(self.root, image=self.root.background, bg="#1b1b1b", borderwidth=0,
+                                      highlightthickness=0)
+        self.label_aram = Label(self.root, font=(font_name, 19), text='전체 알람', fg="black", bg="white")
+        self.label_medicine = Label(self.root, font=(font_name, 19), text='약 복용 알람', fg="black", bg="white")
+        self.label_result = Label(self.root, font=(font_name, 19), text='자세 분석 결과 제공', fg="black", bg="white")
+        self.label_api = Label(self.root, font=(font_name, 19), text='심평원 API 동의', fg="black", bg="white")
+
+    def create_buttons(self):  # button 만드는 함수
+        self.switch_api = Button(self.root, image=self.root.switch_on, bg="white", borderwidth=0, highlightthickness=0)
+        self.switch_medicine = Button(self.root, image=self.root.switch_off, bg="white", borderwidth=0,
+                                      highlightthickness=0)
+        self.switch_aram = Button(self.root, image=self.root.switch_on, bg="white", borderwidth=0, highlightthickness=0)
+        self.switch_result = Button(self.root, image=self.root.switch_on, bg="white", borderwidth=0,
+                                    highlightthickness=0)
+
+    def place(self):
+        self.canvas.create_window(218, 620, window=self.show_name)  # 사용자 이름
+        self.canvas.create_window(325, 620, window=self.setting_icon)  # 설정 아이콘
+        # (label)
+        self.canvas.create_window(534, 660, window=self.label_aram)  # 전체 알림
+        self.canvas.create_window(550, 740, window=self.label_medicine)  # 약 복용 알림
+        self.canvas.create_window(590, 820, window=self.label_result)  # 자세 분석 결과 제공
+        self.canvas.create_window(570, 900, window=self.label_api)  # API
+        # (switch)
+        self.canvas.create_window(870, 660, window=self.switch_aram)  # 전체 알림
+        self.canvas.create_window(870, 740, window=self.switch_medicine)  # 약 복용 알림
+        self.canvas.create_window(870, 820, window=self.switch_result)  # 자세 분석 결과
+        self.canvas.create_window(870, 900, window=self.switch_api)  # API
+
+        self.canvas.create_window(700, 815, window=self.background_image)  # 흰색 배경
+
+
+if __name__ == "__main__":
+    root = Tk()
+    canvas = Canvas(root, bg="#1b1b1b")
     canvas.pack(fill=BOTH, expand=TRUE)
-    # footer.footer_menu(canvas, root)
-    setting_menu(canvas, root)
+    SettingPart(canvas, root)
     root.geometry("1080x1920")
-    # 화면 크기를 지정한다
     root.mainloop()
