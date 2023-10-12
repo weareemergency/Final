@@ -85,8 +85,6 @@ class HealthReport:
         # listbox
 
 
-
-
 if __name__=="__main__":
     root = Tk()
     canvas = Canvas(root, bg="#1b1b1b")
