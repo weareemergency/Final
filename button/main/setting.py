@@ -32,10 +32,10 @@ class SettingPart:
 
     def load_image(self):  # 이미지 로드
         image_path = {
-            "setting_icon": "./img/setting.png",  # 설정 아이콘 (톱니바퀴)
-            "background": "./img/Rectangle_setting.png",  # 뒤 배경 (흰색)
-            "on": "./img/switch_on.png",  # 스위치 on
-            "off": "./img/switch_off.png"  # 스위치 off
+            "setting_icon": "/Users/byungchan/Desktop/mirror_software/img/setting.png",  # 설정 아이콘 (톱니바퀴)
+            "background": "/Users/byungchan/Desktop/mirror_software/img/Rectangle_setting.png",  # 뒤 배경 (흰색)
+            "on": "/Users/byungchan/Desktop/mirror_software/img/switch_on.png",  # 스위치 on
+            "off": "/Users/byungchan/Desktop/mirror_software/img/switch_off.png"  # 스위치 off
         }
 
         self.root.setting_icon = ImageTk.PhotoImage(Image.open(image_path["setting_icon"]).resize((50, 50)))
