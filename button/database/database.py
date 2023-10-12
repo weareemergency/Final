@@ -7,7 +7,7 @@ class DataBase:
             'user': 'root',
             'password': '1234',
             'host': 'localhost',
-            'db': 'test'
+            'db': 'button'
         }
 
     def load_todo_data(self):
@@ -29,11 +29,6 @@ class DataBase:
             cursor.close()
             conn.close()
 
-
-    def
-
-
-data = DataBase().load_todo_data()
-
+# 추가 필요
 
 
