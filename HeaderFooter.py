@@ -1,4 +1,4 @@
-import threading, requests, main, Health, setting, detect
+import threading, requests, main, Health, setting, detect,setting
 from tkinter import *
 from datetime import datetime
 from bs4 import BeautifulSoup as bs
@@ -178,7 +178,8 @@ class Header_footer:
         self.star_button = Label(self.root,image=self.root.black_img,width=1050,height=1200, bg="white",borderwidth=0, highlightthickness=0)
 
         self.canvas.create_window(540, 1000, window=self.star_button)
-        setting.setting_menu(self.canvas, self.root)
+        setting.SettingPart(canvas, root)
+        #setting.setting_menu(self.canvas, self.root)
         
     def write_footer(self):
         footer_ra_img = Image.open("img/footer_ract.png")

@@ -11,7 +11,7 @@ from PIL import ImageTk, Image
 from Module.Draw.draw import Draw
 from Module.Draw.XY import Vertex, Body
 from Module.detect.imagedetect import detect
-
+import test___1 as ai
 result_value = []
 
 class AI:
@@ -117,7 +117,10 @@ class AI:
                                 cv2.imwrite('Result/UserPicture.jpeg', origin_frame)
 
                             if cv2.waitKey(1) == 27 or count == 100: # 여기가 수정부분
-                                self.result = detect()
+                                # self.result = test__1()
+                                model = ai.Detect()
+                                model.get_coordinates()
+                                model.combine_coordinates()
                                 print('결과 측정 성공시')
                                 print(self.result)
                                 break
@@ -150,15 +153,10 @@ class AI:
                 self.black_img = Image.open("img/1B1B1B.png")
                 self.black_img = self.black_img.resize((1050, 1200))
                 self.root.black_img = ImageTk.PhotoImage(self.black_img)
-                
-                
                 self.star_button = Label(self.root,image=self.root.black_img,width=1050,height=1200, bg="white",borderwidth=0, 
                                         highlightthickness=0)
                 self.canvas.create_window(540, 1000, window=self.star_button)
-                
-                
                 main.main_menu(self.canvas, self.root)
-                
                 cap.release()
                 
                 return 11

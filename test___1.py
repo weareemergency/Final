@@ -3,7 +3,7 @@ import mediapipe as mp
 import threading
 import os
 import PIL.Image, PIL.ImageTk
-import playsound
+# import playsound
 import main, Health # class 가져 오기
 import torch 
 
@@ -11,21 +11,22 @@ from tkinter import *
 from PIL import ImageTk, Image
 
 
-class Voice:
-    def __init__(self): 
-        self.start_voice = './mpfile/checking.mp3'
-        self.end_voice = './mpfile/finish_checking.mp3'
-        self.fail_voice = './mpfile/fail.mp3'
+# class Voice:
+#     def __init__(self): 
+#         self.start_voice = './mpfile/checking.mp3'
+#         self.end_voice = './mpfile/finish_checking.mp3'
+#         self.fail_voice = './mpfile/fail.mp3'
 
-    def start(self): # 측정 시작 사운드 출력
-        playsound.playsound(self.start_voice)
+#     def start(self): # 측정 시작 사운드 출력
+#         playsound.playsound(self.start_voice)
 
-    def end(self): # 측정 종료 사운드 출력 
-        playsound.playsound(self.end_voice)
+#     def end(self): # 측정 종료 사운드 출력 
+#         playsound.playsound(self.end_voice)
 
-    def fail(self): # 측정 실패 사운드 출력 
-        playsound.playsound(self.fail_voice)
+#     def fail(self): # 측정 실패 사운드 출력 
+#         playsound.playsound(self.fail_voice)
 
+image_path = "Result/Version_1.pt"
 
 class InitialSettings:
     def __init__(self, cap):
@@ -55,7 +56,7 @@ class Check: # 값 누락 확인 클래스
 
     def check_index(self): # 기존 코드의 문제점을 보완 ==> index error (어떤 부분이 누락되었는지 확인 불가능 했었음)
         if self.label or self.confidence:
-            print(f"{self.label} 값 2개 확인 ==> {self.part_x, self.part_y}")
+            print(f"{self.label} 값 2개 확인 ==> {self.part_x, self.part_y} 정확도 : {self.confidence}")
             return True    
         else:
             print(f"{self.label} 값 누락")
@@ -68,7 +69,7 @@ class Draw:
         self.save_path = 'Result/result_image.jpg'
         self.ear_x, self.ear_y = ear 
         self.number7_x , self.number7_y = number7
-        self.red_color = (0, 0, 255)
+        self.red_color = (0, 0, 255) 
 
     def save_draw_image(self): # -- 귀와 목에 직선을 그린 사진 저장 하는 함수 --
         save_path = 'result_image.jpg'
@@ -86,8 +87,8 @@ class Draw:
 
 class Detect: # 측정 클래스 
     def __init__(self):
-        self.weight_file_path = 'weights/Version_1.pt'
-        self.image_file_path = 'Result/UserPicture.jpeg'
+        self.weight_file_path = 'weights/last.pt'
+        self.image_file_path = 'Result/UserPicture.jpeg' # 이미지 경로 
         self.model = torch.hub.load('ultralytics/yolov5', 'custom', self.weight_file_path, force_reload=True)
         self.ear_coordinates = []  # 귀 좌표를 저장할 리스트
         self.number7_coordinates = []  # number7 좌표를 저장할 리스트
@@ -107,12 +108,18 @@ class Detect: # 측정 클래스
         for _, row in predictions.iterrows():
             part_x, part_y, label, confidence = self.process_label(row)
             if confidence > 0.51111: # 정확도가 0.5111 초과인 것만 탐지
-                check = Check(part_x, part_y, label, confidence)
-                if check.check_index(): # 값 누락 확인 함수 
-                    if label == 'ear': # 귀에 대한 좌푯값 
-                        self.ear_coordinates.append((part_x, part_y)) # 이 부분에서 좌표값 더함(append)
-                    if label == 'number7': # 경추 7번에 대한 좌푯값 
-                        self.number7_coordinates.append((part_x, part_y)) # 위와 동일 
+                if label == 'person' or label == 'ear' or label=='number7' :
+                    print("사람 정확도 : {confidence}")
+                    check = Check(part_x, part_y, label, confidence)
+                    if check.check_index(): # 값 누락 확인 함수 
+                        if label == 'ear': # 귀에 대한 좌푯값 
+                            self.ear_coordinates.append((part_x, part_y)) # 이 부분에서 좌표값 더함(append)
+                            print("귀 정확도 : {confidence}")
+                        if label == 'number7': # 경추 7번에 대한 좌푯값 
+                            self.number7_coordinates.append((part_x, part_y)) # 위와 동일 
+                            print("경추 7번 정확도 : {confidence}")
+                    else:
+                        print('실패 하였습니다')
                 else:
                     print("값이 누락되어 다시 측정 바랍니다.")
                     return 0
@@ -127,7 +134,7 @@ if __name__ == "__main__":
     cap = cv2.VideoCapture(0)
     # camera_info = InitialSettings(cap) 기초 설정 
     
-    image = 'Result/UserPicture.jpeg' # 이미지 파일 
+    image = 'Result/test.jpg' # 이미지 파일 
 
     if os.path.isfile(image): # 여긴 테스트 버전이므로 사진 넣어서 바로 실행 
         print("바로 측정")
