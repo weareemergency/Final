@@ -84,6 +84,7 @@ class Graph(TodoDataBase):
         else:
             print("error")
 
+
 if __name__ == "__main__":
     A = Graph()
     A.connect_db()
