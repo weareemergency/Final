@@ -132,9 +132,9 @@ class HealthList:
             
             print(len(result))
             
-            if(len(result) == 0):
+            if len(result) == 0:
                 self.date_label['text'] = "최신 측정을 해주세요"
-            elif(len(result) != 7):
+            elif len(result) < 7:
                 self.date_label['text'] = "측정 데이터가 더 필요합니다"
                 if result[0][1] < 1:
                     self.check_health['text'] = "거북목이 감지 되었습니다"
@@ -177,9 +177,10 @@ class HealthList:
             self.canvas.create_window(525, 720, window=self.date_label)
             self.canvas.create_window(285, 620, window=self.health_result)
             self.canvas.create_window(540, 980, window=self.rectangle)
-
-            self.plot()
-
+            if len(result) < 7:
+                self.plot(0, 0, 0, 0, 0, 0, 0)
+            else:
+                self.plot(round(result[0][1], 0),round(result[1][1], 0),round(result[2][1], 0),round(result[3][1], 0),round(result[4][1], 0),round(result[5][1], 0),round(result[6][1], 0))
             self.grap_label2.lift()
             self.details_sub_label.lift()
             self.details.lift()
@@ -187,12 +188,14 @@ class HealthList:
         else:
             print('error')
 
-    def plot(self):
+    def plot(sel1, sel2, sel3, sel4, sel5, sel6, sel7,self):
         # 그래프를 그리는 함수이다
+        # 57을 기준으로 표시
         fig = Figure(figsize=(6, 3), dpi=100)
 
         x = np.array([1, 2, 3, 4, 5, 6, 7])
-        y = np.array([0, 0, 0, 0, 0, 0, 0])
+        y = np.array([sel1, sel2, sel3, sel4, sel5, sel6, sel7])
+        # 라운드 숄더 그래프
         x2 = np.array([1, 2, 3, 4, 5, 6, 7])
         y2 = np.array([0, 0, 0, 0, 0, 0, 0])
 
