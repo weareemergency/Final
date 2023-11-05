@@ -1,13 +1,10 @@
-import cv2
-
-# GStreamer 파이프라인 설정
-pipeline = 'nvarguscamerasrc sensor_id=0 ! video/x-raw(memory:NVMM), width=1280, height=720, framerate=60/1 ! nvvidconv flip-method=0 ! video/x-raw, width=1280, height=720 ! videoconvert ! appsink'
+import nanocamera as nano
 
 # 카메라 초기화
-cap = cv2.VideoCapture(pipeline, cv2.CAP_GSTREAMER)
+camera = nano.Camera(camera_type=1, device_id=1, width=640, height=480, fps=30)
 
 # 카메라에서 프레임 캡처
-ret, frame = cap.read()
+frame = camera.read()
 
 # 캡처된 프레임 출력
 cv2.imshow('frame', frame)
@@ -19,4 +16,4 @@ cv2.waitKey(0)
 cv2.destroyAllWindows()
 
 # 카메라 해제
-cap.release()
+camera.release()
