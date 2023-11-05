@@ -1,25 +1,30 @@
-import picamera
-import time
 import cv2
+import gi
+gi.require_version('Gst', '1.0')
+from gi.repository import Gst
 
-# 카메라 초기화
-camera = picamera.PiCamera()
+# GStreamer 파이프라인 설정
+pipeline = 'nvarguscamerasrc sensor_id=0 ! video/x-raw(memory:NVMM), width=1920, height=1080, framerate=30/1 ! nvvidconv flip-method=0 ! video/x-raw, width=960, height=540 ! videoconvert ! appsink'
 
-# 카메라 설정
-camera.resolution = (640, 480)
-camera.framerate = 30
+# GStreamer 파이프라인 생성
+pipeline = Gst.parse_launch(pipeline)
+
+# GStreamer 파이프라인 시작
+pipeline.set_state(Gst.State.PLAYING)
 
 # 카메라에서 프레임 캡처
-camera.capture('/tmp/foo.jpg')
+while True:
+    sample = pipeline.emit('pull-sample')
+    if sample:
+        buf = sample.get_buffer()
+        caps = sample.get_caps()
+        width = caps.get_structure(0).get_value('width')
+        height = caps.get_structure(0).get_value('height')
+        frame = buf.extract_dup(0, buf.get_size())
+        frame = np.frombuffer(frame, dtype=np.uint8).reshape((height, width, 3))
+        cv2.imshow('frame', frame)
+        if cv2.waitKey(1) & 0xFF == ord('q'):
+            break
 
-# 캡처된 프레임 읽기
-frame = cv2.imread('/tmp/foo.jpg')
-
-# 캡처된 프레임 출력
-cv2.imshow('frame', frame)
-
-# 키가 눌릴 때까지 대기
-cv2.waitKey(0)
-
-# 모든 윈도우 닫기
-cv2.destroyAllWindows()
+# GStreamer 파이프라인 정지
+pipeline.set_state(Gst.State.NULL)
