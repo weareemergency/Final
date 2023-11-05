@@ -1,7 +1,10 @@
 import cv2
 
+# GStreamer 파이프라인 설정
+pipeline = 'nvarguscamerasrc sensor_id=0 ! video/x-raw(memory:NVMM), width=1920, height=1080, framerate=30/1 ! nvvidconv flip-method=0 ! video/x-raw, width=960, height=540 ! videoconvert ! appsink'
+
 # 카메라 초기화
-cap = cv2.VideoCapture(0)
+cap = cv2.VideoCapture(pipeline, cv2.CAP_GSTREAMER)
 
 # 카메라에서 프레임 캡처
 ret, frame = cap.read()
