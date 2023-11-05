@@ -177,10 +177,17 @@ class HealthList:
             self.canvas.create_window(525, 720, window=self.date_label)
             self.canvas.create_window(285, 620, window=self.health_result)
             self.canvas.create_window(540, 980, window=self.rectangle)
+            grap_list = []
             if len(result) < 7:
                 self.plot(0, 0, 0, 0, 0, 0, 0)
             else:
-                self.plot(round(result[0][1], 0),round(result[1][1], 0),round(result[2][1], 0),round(result[3][1], 0),round(result[4][1], 0),round(result[5][1], 0),round(result[6][1], 0))
+                for i in result:
+                    if i[1] < 1:
+                        grap_list.append(10-round(i[1], 0)*10)
+                    else:
+                        grap_list.append(0)
+                    print(i)
+                self.plot(grap_list[0],grap_list[1],grap_list[2],grap_list[3],grap_list[4],grap_list[5],grap_list[6])
             self.grap_label2.lift()
             self.details_sub_label.lift()
             self.details.lift()
