@@ -187,7 +187,7 @@ class HealthList:
                     else:
                         grap_list.append(0)
                     print(i)
-                self.plot(grap_list[0],grap_list[1],grap_list[2],grap_list[3],grap_list[4],grap_list[5],grap_list[6])
+                self.plot(int(grap_list[0]),int(grap_list[1]),int(grap_list[2]),int(grap_list[3]),int(grap_list[4]),int(grap_list[5]),int(grap_list[6]))
             self.grap_label2.lift()
             self.details_sub_label.lift()
             self.details.lift()
