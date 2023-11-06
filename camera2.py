@@ -28,5 +28,13 @@ cv2.destroyAllWindows()
 '''
 pip install opencv-python-headless
 pip install imutils
+sudo apt-get update
+sudo apt-get install -y libjpeg-dev libpng-dev libtiff-dev
+sudo apt-get install -y libavcodec-dev libavformat-dev libswscale-dev
+sudo apt-get install -y python3-dev python3-numpy python3-pip
+sudo apt-get install -y libxvidcore-dev libx264-dev libgtk-3-dev
+sudo apt-get install -y libtbb2 libtbb-dev libdc1394-22-dev
+sudo apt-get install -y libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev
+
 
 '''
