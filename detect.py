@@ -11,7 +11,7 @@ from PIL import ImageTk, Image
 from Module.Draw.draw import Draw
 from Module.Draw.XY import Vertex, Body
 from Module.detect.imagedetect import detect
-import test___1 as ai
+from ai import * 
 result_value = []
 
 class AI:
@@ -118,7 +118,7 @@ class AI:
 
                             if cv2.waitKey(1) == 27 or count == 100: # 여기가 수정부분
                                 # self.result = test__1()
-                                model = ai.Detect()
+                                model = Detect('Result/UserPicture.jpeg', cap)
                                 model.get_coordinates()
                                 model.combine_coordinates()
                                 print('결과 측정 성공시')
