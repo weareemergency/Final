@@ -120,7 +120,8 @@ class AI:
                                 # self.result = test__1()
                                 model = Detect('Result/UserPicture.jpeg', cap)
                                 model.get_coordinates()
-                                model.combine_coordinates()
+                                values = model.combine_coordinates()
+                                print(values)
                                 print('결과 측정 성공시')
                                 print(self.result)
                                 break
@@ -182,6 +183,7 @@ class AI:
         thread = threading.Thread(target=self.update_cam)
         thread.daemon = True
         thread.start()
+
 
 if __name__ == "__main__":
     root = Tk()  # Tk 생성
