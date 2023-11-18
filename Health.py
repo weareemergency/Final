@@ -186,8 +186,8 @@ class HealthList:
                         grap_list.append(10-round(i[1], 0)*10)
                     else:
                         grap_list.append(0)
-                    print(i)
-                self.plot(int(grap_list[0]),int(grap_list[1]),int(grap_list[2]),int(grap_list[3]),int(grap_list[4]),int(grap_list[5]),int(grap_list[6]))
+                    print(10-round(i[1], 0)*10)
+                # self.plot(int(grap_list[0]),int(grap_list[1]),int(grap_list[2]),int(grap_list[3]),int(grap_list[4]),int(grap_list[5]),int(grap_list[6]))
             self.grap_label2.lift()
             self.details_sub_label.lift()
             self.details.lift()

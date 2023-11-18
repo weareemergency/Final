@@ -89,17 +89,17 @@ class Detect: # 측정 클래스
         for _, row in predictions.iterrows():
             part_x, part_y, label, confidence = self.process_label(row)
             if confidence: # 정확도가 0.5111 초과인 것만 탐지
-                try:
-                    if label == 'person':
-                        print(f"사람 정확도 : {confidence}")
-                    if label == 'ear':
-                        self.ear_coordinates.append((part_x, part_y)) # 이 부분에서 좌표값 더함(append)
-                        print(f"귀 정확도 : {confidence}")
-                    if label == 'number7':
-                        self.number7_coordinates.append((part_x, part_y)) # 이 부분에서 좌표값 더함(append)
-                        print(f"경추7번 정확도 : {confidence}")
-                except IndexError as e:
-                    print(e)
+                #try:
+                if label == 'person':
+                    print(f"사람 정확도 : {confidence}")
+                if label == 'ear':
+                    self.ear_coordinates.append((part_x, part_y)) # 이 부분에서 좌표값 더함(append)
+                    print(f"귀 정확도 : {confidence}")
+                if label == 'number7':
+                    self.number7_coordinates.append((part_x, part_y)) # 이 부분에서 좌표값 더함(append)
+                    print(f"경추7번 정확도 : {confidence}")
+                #except IndexError as e:
+                    #print(e)
             else:
                 print("값이 누락되어 다시 측정 바랍니다.")
                 return 0
@@ -125,9 +125,9 @@ class Detect: # 측정 클래스
         cv2.circle(self.image, (ex_value, ey_value), 4, (0,0,255), -1)
         cv2.circle(self.image, (nx_value, ny_value), 4, (0,0,255), -1)
 
-        cv2.imshow('im', self.image)
-        cv2.waitKey(0)
-        cv2.destroyAllWindows()
+        #cv2.imshow('im', self.image)
+        #cv2.waitKey(0)
+        #cv2.destroyAllWindows()
 
 
 if __name__ == "__main__":

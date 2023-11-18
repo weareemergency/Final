@@ -11,7 +11,8 @@ from PIL import ImageTk, Image
 from Module.Draw.draw import Draw
 from Module.Draw.XY import Vertex, Body
 from Module.detect.imagedetect import detect
-from ai import * 
+import ai 
+#import ai 
 result_value = []
 
 class AI:
@@ -30,9 +31,11 @@ class AI:
 
     def neck_angle_value(self):
         global result_value
+        # 측정 시작 쓰레드 작동
         thread = threading.Thread(target=self.music)
         thread.daemon = True
         thread.start()
+         
         self.main()
         
         #print(f"neck_angle_value : {self.result}")
@@ -68,16 +71,17 @@ class AI:
         first_rect = 400
         second_rect = 350
         count = 0
+        check_value=[]
         print("측정")
         while True:
             ret, frame = cap.read()
             
             if not ret:
                 break
+            ori_frame = frame.copy()
+            frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+            results = pose.process(frame_rgb)
             try:
-                frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-                results = pose.process(frame_rgb)
-
                 if results.pose_landmarks:
                     right_ear_landmark = results.pose_landmarks.landmark[mp_pose.PoseLandmark.RIGHT_EAR]
                     left_ear_landmark = results.pose_landmarks.landmark[mp_pose.PoseLandmark.LEFT_EAR]
@@ -110,19 +114,27 @@ class AI:
                     
                     if ifin_1 and ifin_2 and ifin_3:
                         if (abs(ear_diff_x) - abs(ear_diff_y)) < 40: # 40 부분은 때에 따라서 무조건 수정
+                            #print('사람 인식 성공')
                             center.center_rect(first_rect, 1)
                             center.center_rect(second_rect, 1)
                             count += 1
-                            if count == 85:
-                                cv2.imwrite('Result/UserPicture.jpeg', origin_frame)
+                            if count == 100:
+                                cv2.imwrite('Result/UserPicture.jpeg', ori_frame)
 
-                            if cv2.waitKey(1) == 27 or count == 100: # 여기가 수정부분
+                            if cv2.waitKey(0) == 27 or count == 100: # 여기가 수정부분
                                 # self.result = test__1()
-                                model = Detect('Result/UserPicture.jpeg', cap)
-                                model.get_coordinates()
+                                model = ai.Detect('Result/UserPicture.jpeg', cap)
+                                check_value = model.get_coordinates()
                                 values = model.combine_coordinates()
                                 print(values)
                                 print('결과 측정 성공시')
+                                for i in check_value:
+                                    print(i)
+                                
+                                check_value.index(1)
+                                check_value.index(2)
+                                check_value.index(3)
+                                
                                 print(self.result)
                                 break
                         else:
@@ -132,7 +144,7 @@ class AI:
                         center.center_rect(first_rect, 0)
                         center.center_rect(second_rect, 0)
 
-                # cv2.imshow('Main', frame)
+                #cv2.imshow('Main', frame)
                 
                 src = cv2.resize(frame, (950, 530))
                 image = cv2.cvtColor(src, cv2.COLOR_BGR2RGB)
@@ -141,8 +153,8 @@ class AI:
                 self.cam_panel.config(image=imgtk,width=950,height=530)
                 self.cam_panel.image = imgtk
                 origin_frame = frame.copy()
-
-                if cv2.waitKey(1) == 27:
+                
+                if cv2.waitKey(0) == 27:
                     break
             except:
                 thread = threading.Thread(target=self.music3)
@@ -159,9 +171,10 @@ class AI:
                 self.canvas.create_window(540, 1000, window=self.star_button)
                 main.main_menu(self.canvas, self.root)
                 cap.release()
-                
+
                 return 11
-            
+        # 사람, 귀, 경추가 모두 측정이 되었을 경우
+        
         thread = threading.Thread(target=self.music2)
         thread.daemon = True
         thread.start()
