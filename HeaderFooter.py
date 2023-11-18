@@ -162,12 +162,7 @@ class Header_footer:
                                borderwidth=0, anchor='center',highlightthickness=0)
         self.canvas.create_window(540, 900, window=self.cam_panel)
         
-        error_check = AI(self.canvas, self.root, self.cam_panel).neck_angle_value()
-        
-        if error_check == 1:
-            print("정상 적으로 측정이 완료되었다.")
-        elif error_check == 11:
-            print("측정을 실패")
+        AI(self.canvas, self.root, self.cam_panel).neck_angle_value()
         
         
     def setting(self):
