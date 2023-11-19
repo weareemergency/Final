@@ -119,11 +119,12 @@ class AI:
                             center.center_rect(second_rect, 1)
                             count += 1
                             if count == 100:
-                                cv2.imwrite('Result/UserPicture.jpeg', ori_frame)
+                                pass
+                                # cv2.imwrite('Result/UserPicture.jpeg', ori_frame)
 
                             if cv2.waitKey(0) == 27 or count == 100: # 여기가 수정부분
                                 # self.result = test__1()
-                                model = ai.Detect('Result/UserPicture.jpeg', cap)
+                                model = ai.Detect('Result/test_1.jpg', cap)
                                 check_value = model.get_coordinates()
                                 values = model.combine_coordinates()
                                 print(values)
