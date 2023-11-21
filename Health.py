@@ -96,7 +96,7 @@ class HealthList:
     def health(self):
         A = Graph()
         
-        result = A.select_health('jiseok')
+        result = A.get_health_neck('jiseok')
         
         if result:
             self.ract = Image.open("img/rectangle1.png")
@@ -153,7 +153,7 @@ class HealthList:
                         if avg_data == None:
                             avg_data = i[1]
                         avg_data = (i[1]+avg_data)/2
-                        
+                print(data) 
                 if data < 1 :
                     self.date_label['text'] = f"{result[6][2]} ~ {result[0][2]} 까지의 데이터로 분석한 결과입니다"
                     if data > avg_data:                 
@@ -183,11 +183,22 @@ class HealthList:
             else:
                 for i in result:
                     if i[1] < 1:
-                        grap_list.append(10-round(i[1], 0)*10)
+                        grap_list.append(int(i[1]*10))
                     else:
                         grap_list.append(0)
-                    print(10-round(i[1], 0)*10)
+                    print(int(i[1]*10))
+                print('heheh')
+                print(grap_list)
+                # print(int(grap_list[0]))
+                # print(int(grap_list[1]))
+                # print(int(grap_list[2]))
+                # print(int(grap_list[3]))
+                # print(int(grap_list[4]))
+                # print(int(grap_list[5]))
+                # print(int(grap_list[6]))
+                # print(type(int(grap_list[0])))
                 # self.plot(int(grap_list[0]),int(grap_list[1]),int(grap_list[2]),int(grap_list[3]),int(grap_list[4]),int(grap_list[5]),int(grap_list[6]))
+                self.plot(int(grap_list[0]),int(grap_list[1]),int(grap_list[2]),int(grap_list[3]),int(grap_list[4]),int(grap_list[5]),int(grap_list[6]))
             self.grap_label2.lift()
             self.details_sub_label.lift()
             self.details.lift()
@@ -195,34 +206,34 @@ class HealthList:
         else:
             print('error')
 
-    def plot(sel1, sel2, sel3, sel4, sel5, sel6, sel7,self):
+    def plot(self,sel1, sel2, sel3, sel4, sel5, sel6, sel7):
         # 그래프를 그리는 함수이다
         # 57을 기준으로 표시
+        
         fig = Figure(figsize=(6, 3), dpi=100)
-
-        x = np.array([1, 2, 3, 4, 5, 6, 7])
-        y = np.array([sel1, sel2, sel3, sel4, sel5, sel6, sel7])
-        # 라운드 숄더 그래프
-        x2 = np.array([1, 2, 3, 4, 5, 6, 7])
-        y2 = np.array([0, 0, 0, 0, 0, 0, 0])
-
-        model = make_interp_spline(x, y)
-        model2 = make_interp_spline(x2, y2)
-
-        xs = np.linspace(1, 7, 500)
-        ys = model(xs)
-
-        xs2 = np.linspace(1, 7, 500)
-        ys2 = model2(xs2)
+        #print(sel)
+        x=np.array([1,2,3,4,5,6,7])
+        y=np.array([sel1, sel2, sel3, sel4, sel5, sel6, sel7])
+        x2=np.array([1,2,3,4,5,6,7])
+        y2=np.array([0,0,0,0,0,0,0])
+        
+        model=make_interp_spline(x, y)
+        model2=make_interp_spline(x2, y2)
+        
+        xs=np.linspace(1,7,500)
+        ys=model(xs)
+        
+        xs2=np.linspace(1,7,500)
+        ys2=model2(xs2)
         plt.rcParams['font.family'] = 'NanumGothic'
         plot1 = fig.add_subplot(111)
-        plot1.plot(xs, ys, zorder=50, color='green')
-        plot1.plot(xs2, ys2, zorder=50, color='blue')
-
+        plot1.plot(xs, ys,zorder=50, color = 'green',label='거북목')
+        plot1.plot(xs2, ys2,zorder=50, color = 'blue',label='목디스크')
+        
         plot1.axis('off')
-        # plot1.legend()
+        plot1.legend()
         # 그래프에서 축을 삭제한다
-        self.canvas = FigureCanvasTkAgg(fig, master=self.root)
+        self.canvas = FigureCanvasTkAgg(fig, master=self.root)  
         self.canvas.draw()
         self.canvas.get_tk_widget().place(x=82, y=880)
 

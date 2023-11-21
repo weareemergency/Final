@@ -8,6 +8,11 @@ from detect import AI
 from todo import TodoList
 from gtts import gTTS
 import playsound
+from scipy.interpolate import make_interp_spline
+from matplotlib.backends.backend_tkagg import (FigureCanvasTkAgg, 
+NavigationToolbar2Tk)
+from matplotlib.figure import Figure
+import matplotlib.pyplot as plt
 
 class Header_footer:
     # write_header 함수를 실행하여 label, button을 출력한다
@@ -173,7 +178,7 @@ class Header_footer:
         self.star_button = Label(self.root,image=self.root.black_img,width=1050,height=1200, bg="white",borderwidth=0, highlightthickness=0)
 
         self.canvas.create_window(540, 1000, window=self.star_button)
-        setting.SettingPart(canvas, root)
+        setting.SettingPart(self.canvas, self.root)
         #setting.setting_menu(self.canvas, self.root)
         
     def write_footer(self):

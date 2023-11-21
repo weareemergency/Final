@@ -8,7 +8,7 @@ import torch
 
 from tkinter import *
 from PIL import ImageTk, Image
-
+from database import Graph
 class InitialSettings:
     def __init__(self, cap):
         self.cap = cap # frame
@@ -63,13 +63,13 @@ class Draw:
         cv2.imwrite(self.save_path, image) # 검사 결과지 저장 
 
 class Detect: # 측정 클래스 
-    def __init__(self, image_file_path, cap):
+    def __init__(self, image_file_path):
         self.weight_file_path = 'weights/last.pt' # version2
         self.image_file_path = image_file_path # 'Result/UserPicture.jpeg' # 이미지 경로 
         self.model = torch.hub.load('ultralytics/yolov5', 'custom', self.weight_file_path, force_reload=True)
         self.ear_coordinates = []  # 귀 좌표를 저장할 리스트
         self.number7_coordinates = []  # number7 좌표를 저장할 리스트
-        self.cap = cap
+        #self.cap = cap
         self.image = None
 
         # InitialSettings(cap)
@@ -82,6 +82,7 @@ class Detect: # 측정 클래스
         return (x_min + x_max) // 2, (y_min + y_max) // 2, label, confidence
 
     def get_coordinates(self): # -- 측정 함수 -- 
+        complit_value = []
         self.image = cv2.imread(self.image_file_path)
         result = self.model(self.image)
         predictions = result.pandas().xyxy[0]
@@ -89,21 +90,25 @@ class Detect: # 측정 클래스
         for _, row in predictions.iterrows():
             part_x, part_y, label, confidence = self.process_label(row)
             if confidence: # 정확도가 0.5111 초과인 것만 탐지
-                #try:
-                if label == 'person':
-                    print(f"사람 정확도 : {confidence}")
-                if label == 'ear':
-                    self.ear_coordinates.append((part_x, part_y)) # 이 부분에서 좌표값 더함(append)
-                    print(f"귀 정확도 : {confidence}")
-                if label == 'number7':
-                    self.number7_coordinates.append((part_x, part_y)) # 이 부분에서 좌표값 더함(append)
-                    print(f"경추7번 정확도 : {confidence}")
-                #except IndexError as e:
-                    #print(e)
+                try:
+                    if label == 'person':
+                        print(f"사람 정확도 : {confidence}")
+                        complit_value.append(1)
+                    if label == 'ear':
+                        self.ear_coordinates.append((part_x, part_y)) # 이 부분에서 좌표값 더함(append)
+                        print(f"귀 정확도 : {confidence}")
+                        complit_value.append(2)
+                    if label == 'number7':
+                        self.number7_coordinates.append((part_x, part_y)) # 이 부분에서 좌표값 더함(append)
+                        print(f"경추7번 정확도 : {confidence}")
+                        complit_value.append(3)
+                except IndexError as e:
+                    print(e)
             else:
                 print("값이 누락되어 다시 측정 바랍니다.")
                 return 0
-
+        return complit_value
+    
     def combine_coordinates(self):
         ex_value, ey_value = 0, 0
         nx_value, ny_value = 0, 0
@@ -128,17 +133,19 @@ class Detect: # 측정 클래스
         #cv2.imshow('im', self.image)
         #cv2.waitKey(0)
         #cv2.destroyAllWindows()
-
+        cv2.imwrite('Result/Result.jpeg', self.image)
+        return [ex_value, ey_value, nx_value, ny_value]
+    
 
 if __name__ == "__main__":
-    cap = cv2.VideoCapture(0)
+    # cap = cv2.VideoCapture(0)
     # camera_info = InitialSettings(cap) 기초 설정 
     
     image = 'Result/UserPicture.jpeg' # 이미지 파일 
 
     # if os.path.isfile(image): # 여긴 테스트 버전이므로 사진 넣어서 바로 실행 
     print("바로 측정")
-    model = Detect(image, cap)
+    model = Detect(image)
     model.get_coordinates()
     model.combine_coordinates()
     # else:

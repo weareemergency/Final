@@ -18,7 +18,7 @@ if __name__=="__main__":
     HeaderFooter.Header_footer(canvas,root, mode)
     main_id=main.main_menu(canvas, root)
     
-    # root.wm_attributes('-fullscreen', 'True') # gui 완성시 주석 삭제
+    root.wm_attributes('-fullscreen', 'True') # gui 완성시 주석 삭제
     # 윈도우 상당 바를 없애고 풀스크린 설정 한다
     
     root.mainloop()
