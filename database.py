@@ -1,4 +1,5 @@
 import pymysql, datetime
+from datetime import datetime
 
 class TodoDataBase():
     def __init__(self):
@@ -60,12 +61,13 @@ class Graph(TodoDataBase):
     def inesrt_angle(self, angle_value):
         if self.connect_db:
             cursor = self.connection.cursor()
-            query = f"insert into ranking values('1', '양유빈', `{angle_value}`, '{datetime.datetime.now()}')"  
+            date = datetime.now()
+            now_date = date.strftime("%Y-%m-%d")
+            query = f"insert into neckdata(userid, angle, detectdate, checkcom) values('jiseok', {str(angle_value)}, '{now_date}', 'Y')" 
+            print(now_date)
             cursor.execute(query)
-
-            result = cursor.fetchall()
-            
-            return result
+            self.connection.commit()
+            print(cursor.rowcount, "record inserted.")
         
         else:
             print("error")
@@ -83,7 +85,19 @@ class Graph(TodoDataBase):
             return result
         else:
             print("error")
-
+    def get_health_neck(self, id):
+        if self.connect_db:
+            cursor = self.connection.cursor()
+            query = f"select userid, angle, detectdate, checkcom from neckdata where userid = '{id}' detectdate desc limit 7;"
+            cursor.execute(query)
+            result = cursor.fetchall() # db 결과 저장
+            
+            cursor.close()
+            self.connection.close()
+            
+            return result
+        else:
+            print("error")
 
 if __name__ == "__main__":
     A = Graph()

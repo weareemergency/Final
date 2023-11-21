@@ -12,7 +12,8 @@ from Module.Draw.draw import Draw
 from Module.Draw.XY import Vertex, Body
 from Module.detect.imagedetect import detect
 import ai 
-#import ai 
+from database import Graph
+
 result_value = []
 
 class AI:
@@ -56,7 +57,8 @@ class AI:
         playsound.playsound(filename)
         
     def update_cam(self):
-        cap = cv2.VideoCapture(0)
+        #cap = cv2.VideoCapture(0)
+        cap = cv2.VideoCapture(1,cv2.CAP_DSHOW)
         
         width, height = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH)), int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
         vers = Vertex(width, height)
@@ -118,25 +120,31 @@ class AI:
                             center.center_rect(first_rect, 1)
                             center.center_rect(second_rect, 1)
                             count += 1
-                            if count == 100:
-                                pass
-                                # cv2.imwrite('Result/UserPicture.jpeg', ori_frame)
+                            if count == 200:
+                                cv2.imwrite('Result/UserPicture.jpeg', ori_frame)
 
-                            if cv2.waitKey(0) == 27 or count == 100: # 여기가 수정부분
+                            if cv2.waitKey(0) == 27 or count == 200: # 여기가 수정부분
                                 # self.result = test__1()
-                                model = ai.Detect('Result/test_1.jpg', cap)
+                                model = ai.Detect('Result/UserPicture.jpeg')
                                 check_value = model.get_coordinates()
                                 values = model.combine_coordinates()
-                                print(values)
+                                print(values) # x y 좌표
                                 print('결과 측정 성공시')
-                                for i in check_value:
-                                    print(i)
+                                
+                                ex_value, ey_value, nx_value, ny_value = values
+                                x = abs(ex_value - nx_value)
+                                y = ny_value - ey_value
+                                result = y/x
+                                
+                                print(result)
                                 
                                 check_value.index(1)
                                 check_value.index(2)
                                 check_value.index(3)
+                                print('db go')
+                                A = Graph()
+                                A.inesrt_angle(result)
                                 
-                                print(self.result)
                                 break
                         else:
                             center.center_rect(first_rect, 1)
@@ -157,7 +165,8 @@ class AI:
                 
                 if cv2.waitKey(0) == 27:
                     break
-            except:
+            except Exception as e:
+                print(e)
                 thread = threading.Thread(target=self.music3)
                 thread.daemon = True
                 thread.start()
