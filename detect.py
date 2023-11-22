@@ -57,8 +57,11 @@ class AI:
         playsound.playsound(filename)
         
     def update_cam(self):
-        #cap = cv2.VideoCapture(0)
+        # cap = cv2.VideoCapture(0)
         cap = cv2.VideoCapture(1,cv2.CAP_DSHOW)
+                
+        cap.set(cv2.CAP_PROP_FRAME_WIDTH, 2580)
+        cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 1440)
         
         width, height = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH)), int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
         vers = Vertex(width, height)

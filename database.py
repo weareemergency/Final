@@ -64,10 +64,10 @@ class Graph(TodoDataBase):
             date = datetime.now()
             now_date = date.strftime("%Y-%m-%d")
             query = f"insert into neckdata(userid, angle, detectdate, checkcom) values('jiseok', {str(angle_value)}, '{now_date}', 'Y')" 
-            print(now_date)
+            #print(now_date)
             cursor.execute(query)
             self.connection.commit()
-            print(cursor.rowcount, "record inserted.")
+            #print(cursor.rowcount, "record inserted.")
         
         else:
             print("error")
@@ -88,7 +88,7 @@ class Graph(TodoDataBase):
     def get_health_neck(self, id):
         if self.connect_db:
             cursor = self.connection.cursor()
-            query = f"select userid, angle, detectdate, checkcom from neckdata where userid = '{id}' detectdate desc limit 7;"
+            query = f"select userid, angle, detectdate, checkcom from neckdata where userid = '{id}' ORDER BY necknum desc limit 7;"
             cursor.execute(query)
             result = cursor.fetchall() # db 결과 저장
             
